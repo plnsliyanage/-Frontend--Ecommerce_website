@@ -3,11 +3,15 @@ import { useState, useEffect } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { BiSolidEdit } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io"
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 
 export default function AdminProductPage() {
+    const location = useLocation()
+    console.log(location)
+
     const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(import.meta.env.VITE_API_URL + "/api/products").then(
@@ -36,6 +40,8 @@ export default function AdminProductPage() {
                         <th>Product Name</th>
                         <th>Product Price</th>
                         <th>Labeled Price</th>
+                        <th>Stock</th>
+
                         <th>Category</th>
                     </tr>
                 </thead>
@@ -48,11 +54,16 @@ export default function AdminProductPage() {
                                 <td>{item.name}</td>
                                 <td>{item.price}</td>
                                 <td>{item.labelledPrice}</td>
+                                <td>{item.stock}</td>
                                 <td>{item.category}</td>
                                 <td>
                                     <div className="flex flex-row gap-[20px] justify-center items-center">
                                         <FaRegTrashCan className="hover:text-accent" />
-                                        <BiSolidEdit className="hover:text-accent" />
+                                        <BiSolidEdit className="hover:text-accent" onClick={() => {
+                                            navigate("/admin/update-product", {
+                                                state: item
+                                            })
+                                        }} />
                                     </div>
                                 </td>
                             </tr>

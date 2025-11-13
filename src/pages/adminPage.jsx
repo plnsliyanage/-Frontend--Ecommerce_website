@@ -5,6 +5,7 @@ import { BsBox2Heart } from "react-icons/bs";
 import { HiOutlineUsers } from "react-icons/hi";
 import AdminProductPage from "./admin/adminProductPage";
 import AddProductPage from "./admin/adminAddNewProduct";
+import UpdateProductPage from "./admin/adminUpdateProduct";
 
 export default function AdminPage() {
     return (
@@ -31,7 +32,7 @@ export default function AdminPage() {
 
                 <Link to="/admin/users" className="w-[90%] flex items-center gap-2 px-4  rounded-lg">
                     <HiOutlineUsers />
-                    Products
+                    Users
                 </Link>
 
 
@@ -43,6 +44,7 @@ export default function AdminPage() {
                         <Route path="/products" element={<AdminProductPage />} />
                         <Route path="/orders" element={<h1>Orders</h1>} />
                         <Route path="/add-product" element={<AddProductPage />} />
+                        <Route path="/update-product" element={<UpdateProductPage />} />
                     </Routes>
                 </div>
 

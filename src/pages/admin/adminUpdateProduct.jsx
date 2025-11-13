@@ -1,36 +1,45 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import mediaUpload from "../../utils/mediaUpload"
 import toast from "react-hot-toast"
 import axios from "axios"
 
-export default function AddProductPage() {
-    const [productId, setProductId] = useState("")
-    const [name, setName] = useState("")
-    const [altNames, setAltNames] = useState("")
-    const [description, setDescription] = useState("") // <-- added missing state
-    const [images, setImages] = useState([])
-    const [price, setPrice] = useState(0)
-    const [labelledPrice, setLabelledPrice] = useState(0)
-    const [category, setCategory] = useState("cream")
-    const [stock, setStock] = useState(0)
-    const navigate = useNavigate()
+export default function UpdateProductPage() {
+    const location = useLocation();
 
+    const [productId, setProductId] = useState(location.state?.productID || "");
+    const [name, setName] = useState(location.state?.name || "");
+    const [altNames, setAltNames] = useState(
+        location.state?.altNames ? location.state.altNames.join(",") : ""
+    );
+    const [description, setDescription] = useState(location.state?.description || "");
+    const [images, setImages] = useState([]);
+    const [price, setPrice] = useState(location.state?.price || "");
+    const [labelledPrice, setLabelledPrice] = useState(location.state?.labelledPrice || "");
+    const [category, setCategory] = useState(location.state?.category || "");
+    const [stock, setStock] = useState(location.state?.stock || "");
 
-    async function addProduct() {
+    const navigate = useNavigate();
+
+    async function updateProduct() {
         const token = localStorage.getItem("token");
         if (token == null) {
             navigate("/login");
-            return
+            return;
         }
 
-        const promises = []
+        const promises = [];
         for (let i = 0; i < images.length; i++) {
-            promises[i] = mediaUpload(images[i])
+            promises[i] = mediaUpload(images[i]);
         }
+
         try {
-            const urls = await Promise.all(promises);
-            const alternativeNames = altNames.split(",")
+            let urls = await Promise.all(promises);
+
+            if (urls.length == 0) {
+                urls = location.state.images
+            }
+            const alternativeNames = altNames.split(",");
 
             const product = {
                 productID: productId,
@@ -42,32 +51,36 @@ export default function AddProductPage() {
                 labelledPrice: labelledPrice,
                 category: category,
                 stock: stock
-            }
+            };
 
-            await axios.post(import.meta.env.VITE_API_URL + "/api/products", product, {
-                headers: {
-                    Authorization: "Bearer " + token
+            // ✅ Changed POST → PUT for update
+            await axios.put(
+                `${import.meta.env.VITE_API_URL}/api/products/${productId}`,
+                product,
+                {
+                    headers: {
+                        Authorization: "Bearer " + token
+                    }
                 }
-            })
-            toast.success("Product added successfully");
+            );
+
+            toast.success("Product Updated successfully");
             navigate("/admin/products");
 
         } catch {
             toast.error("An error occurred");
         }
-
-
-
     }
 
     return (
         <div className="w-full min-h-screen flex justify-center items-center bg-primary/40 p-6">
             <div className="w-full max-w-lg bg-primary text-secondary shadow-lg rounded-2xl border border-accent p-6 flex flex-col gap-4">
                 <h2 className="text-2xl font-semibold text-accent text-center mb-2">
-                    Add New Product
+                    Update New Product
                 </h2>
 
                 <input
+                    disabled
                     className="border border-secondary/40 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-accent bg-white/80"
                     placeholder="Product ID"
                     value={productId}
@@ -87,7 +100,6 @@ export default function AddProductPage() {
                     value={altNames}
                     onChange={(e) => setAltNames(e.target.value)}
                 />
-
 
                 <textarea
                     className="border border-secondary/40 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-accent bg-white/80 h-24 resize-none"
@@ -155,7 +167,7 @@ export default function AddProductPage() {
 
                 <div className="flex gap-2 mt-4 justify-end">
                     <button
-                        onClick={addProduct}
+                        onClick={updateProduct}
                         className="w-1/4 bg-accent hover:bg-secondary text-primary rounded-lg py-2 font-semibold transition-colors"
                     >
                         Submit
@@ -170,6 +182,5 @@ export default function AddProductPage() {
 
             </div>
         </div>
-
-    )
+    );
 }
