@@ -17,7 +17,7 @@ export default function LoginPage() {
             localStorage.setItem("token", response.data.token)
 
             const user = response.data.user;
-            // From the given role direct to the corect path
+
             if (user.role === "admin") {
                 navigate("/admin");
             } else {
@@ -31,17 +31,17 @@ export default function LoginPage() {
 
     return (
         <div className="w-full h-screen bg-[url('/bg.jpg')] bg-cover bg-center flex items-center justify-center">
-            {/* Glass container */}
+
             <div className="w-[450px] md:w-[500px] h-[520px] backdrop-blur-lg bg-white/10 shadow-2xl rounded-2xl flex flex-col items-center justify-center gap-6 p-8 border border-white/20">
 
-                {/* Logo */}
+
                 <img src="/logo.png" alt="Logo" className="w-[120px] h-auto mb-4" />
 
-                {/* Title */}
+
                 <h2 className="text-2xl font-semibold text-black tracking-wide">Welcome Back</h2>
                 <p className="text-sm text-black mb-4">Please login to continue</p>
 
-                {/* Inputs */}
+
                 <input
                     type="email"
                     placeholder="Email"
@@ -55,7 +55,7 @@ export default function LoginPage() {
                     className="w-[90%] h-[45px] px-4 rounded-lg bg-white/90 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] outline-none transition-all"
                 />
 
-                {/* Button */}
+
                 <button
                     onClick={login}
                     className="w-[90%] h-[45px] bg-[var(--color-accent)] hover:bg-red-700 text-white font-semibold rounded-lg shadow-md transition-all"
