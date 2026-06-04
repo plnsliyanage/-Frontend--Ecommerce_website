@@ -14,7 +14,8 @@ import UserSettings from "./pages/settings";
 function App() {
   return (
     <BrowserRouter>
-      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <GoogleOAuthProvider //</BrowserRouter>clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+      >
         <div className="w-full h-[100vh] ">
           <Toaster position="top-right" />
           <Routes path="/">

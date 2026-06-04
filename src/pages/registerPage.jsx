@@ -1,22 +1,45 @@
+// Import axios for making HTTP requests to the backend
 import axios from "axios";
+
+// Import React state hook
 import { useState } from "react";
+
+// Import toast notifications
 import toast from "react-hot-toast";
+
+// Import routing components
 import { Link, useNavigate } from "react-router-dom";
 
+// Register Page Component
 export default function RegisterPage() {
+  // State for email input
   const [email, setEmail] = useState("");
+
+  // State for password input
   const [password, setPassword] = useState("");
+
+  // State for first name input
   const [firstName, setFirstName] = useState("");
+
+  // State for last name input
   const [lastName, setLastName] = useState("");
+
+  // State for confirm password input
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  // Hook used for page navigation
   const navigate = useNavigate();
 
+  // Function executed when Register button is clicked
   async function register() {
+    // Check whether password and confirm password match
     if (password !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
+
     try {
+      // Send registration data to backend API
       await axios.post(import.meta.env.VITE_API_URL + "/api/users/", {
         email: email,
         password: password,
@@ -24,28 +47,40 @@ export default function RegisterPage() {
         lastName: lastName,
       });
 
+      // Show success message
       toast.success("Registration successful! Please login.");
+
+      // Redirect user to login page
       navigate("/login");
     } catch (e) {
+      // Display error in browser console
       console.error("Login failed:", e);
-      //alert("Login failed. Please check your credentials.");
+
+      // Show error notification
       toast.error("Login failed. Please check your credentials.");
     }
   }
 
   return (
+    // Main container
     <div className="min-h-screen w-full relative flex items-stretch">
-      {/* Background image + gradient overlay */}
+      {/* Background image and overlay */}
       <div className="absolute inset-0">
+        {/* Background image */}
         <div className="h-full w-full bg-[url('/bg.jpg')] bg-cover bg-center" />
+
+        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/70 via-secondary/40 to-primary/70" />
       </div>
 
-      {/* Layout */}
+      {/* Main page layout */}
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 w-full">
+        {/* Registration form section */}
         <div className="flex items-center justify-center p-6 sm:p-10">
           <div className="w-full max-w-md">
+            {/* Glassmorphism card */}
             <div className="rounded-3xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl p-8 sm:p-10">
+              {/* Company logo */}
               <div className="mb-8 flex flex-col items-center text-center">
                 <img
                   src="/logo.png"
@@ -54,7 +89,9 @@ export default function RegisterPage() {
                 />
               </div>
 
+              {/* Registration form fields */}
               <div className="space-y-5">
+                {/* Email input field */}
                 <div className="space-y-2">
                   <label
                     htmlFor="email"
@@ -71,6 +108,8 @@ export default function RegisterPage() {
                     className="w-full h-11 rounded-xl bg-white/90 text-secondary placeholder-secondary/50 px-4 outline-none ring-2 ring-transparent focus:ring-accent/60 transition"
                   />
                 </div>
+
+                {/* First name input field */}
                 <div className="space-y-2">
                   <label
                     htmlFor="firstName"
@@ -87,6 +126,8 @@ export default function RegisterPage() {
                     className="w-full h-11 rounded-xl bg-white/90 text-secondary placeholder-secondary/50 px-4 outline-none ring-2 ring-transparent focus:ring-accent/60 transition"
                   />
                 </div>
+
+                {/* Last name input field */}
                 <div className="space-y-2">
                   <label
                     htmlFor="lastName"
@@ -104,6 +145,7 @@ export default function RegisterPage() {
                   />
                 </div>
 
+                {/* Password input field */}
                 <div className="space-y-2">
                   <label
                     htmlFor="password"
@@ -120,6 +162,8 @@ export default function RegisterPage() {
                     className="w-full h-11 rounded-xl bg-white/90 text-secondary placeholder-secondary/50 px-4 outline-none ring-2 ring-transparent focus:ring-accent/60 transition"
                   />
                 </div>
+
+                {/* Confirm password input field */}
                 <div className="space-y-2">
                   <label
                     htmlFor="confirmPassword"
@@ -137,6 +181,7 @@ export default function RegisterPage() {
                   />
                 </div>
 
+                {/* Register button */}
                 <button
                   onClick={register}
                   className="w-full h-11 rounded-xl bg-accent text-white font-semibold shadow-lg shadow-accent/20 hover:brightness-110 active:scale-[0.99] transition"
@@ -145,6 +190,7 @@ export default function RegisterPage() {
                 </button>
               </div>
 
+              {/* Divider line */}
               <div className="mt-8">
                 <div className="relative text-center">
                   <div className="absolute inset-0 flex items-center">
@@ -153,6 +199,7 @@ export default function RegisterPage() {
                 </div>
               </div>
 
+              {/* Link to login page */}
               <div className="mt-6 text-center text-sm text-primary/90">
                 Already have and account?{" "}
                 <Link
@@ -164,14 +211,16 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Small footer for mobile */}
+            {/* Mobile footer */}
             <p className="mt-6 text-center text-primary/80 text-xs lg:hidden">
               © {new Date().getFullYear()} CBC – Crystal Beauty Clear
             </p>
           </div>
         </div>
-        {/* Left side hero */}
+
+        {/* Hero section shown only on large screens */}
         <div className="hidden lg:flex flex-col justify-between p-10">
+          {/* Logo and company name */}
           <div className="flex items-center gap-4">
             <img
               src="/logo.png"
@@ -183,6 +232,7 @@ export default function RegisterPage() {
             </span>
           </div>
 
+          {/* Marketing content */}
           <div className="flex-1 flex items-center">
             <div className="max-w-xl space-y-6">
               <h1 className="text-5xl font-bold leading-tight text-white drop-shadow">
@@ -192,17 +242,18 @@ export default function RegisterPage() {
                 Register to explore exclusive offers, track your orders, and
                 save your favorite beauty picks. Beautiful shopping—made simple.
               </p>
+
+              {/* Decorative line */}
               <div className="h-1 w-28 bg-accent rounded-full" />
             </div>
           </div>
 
+          {/* Desktop footer */}
           <p className="text-primary/80 text-sm">
             © {new Date().getFullYear()} CBC – Crystal Beauty Clear. All rights
             reserved.
           </p>
         </div>
-
-        {/* Right side form */}
       </div>
     </div>
   );

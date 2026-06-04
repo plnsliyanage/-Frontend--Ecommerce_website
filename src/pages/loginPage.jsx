@@ -1,28 +1,56 @@
+// Import Google OAuth login hook
 import { useGoogleLogin } from "@react-oauth/google";
+
+// Import Axios for making HTTP requests
 import axios from "axios";
+
+// Import React state hook
 import { useState } from "react";
+
+// Import toast notifications
 import toast from "react-hot-toast";
+
+// Import navigation and link components
 import { Link, useNavigate } from "react-router-dom";
 
+// Login Page Component
 export default function LoginPage() {
+  // State for storing email input value
   const [email, setEmail] = useState("");
+
+  // State for storing password input value
   const [password, setPassword] = useState("");
+
+  // Hook used for page navigation
   const navigate = useNavigate();
+
+  // Google Login Configuration
   const googleLogin = useGoogleLogin({
+    // Executes when Google authentication is successful
     onSuccess: (response) => {
+      // Send Google access token to backend
       axios
         .post(import.meta.env.VITE_API_URL + "/api/users/google-login", {
           token: response.access_token,
         })
+
+        // Handle successful backend response
         .then((res) => {
+          // Store JWT token in browser local storage
           localStorage.setItem("token", res.data.token);
+
+          // Get logged-in user information
           const user = res.data.user;
+
+          // Redirect based on user role
           if (user.role == "admin") {
             navigate("/admin");
           } else {
             navigate("/");
           }
         })
+
+        // Handle Google login errors
         .catch((err) => {
           console.error("Google login failed:", err);
           toast.error("Google login failed. Please try again.");
@@ -30,44 +58,57 @@ export default function LoginPage() {
     },
   });
 
+  // Normal email/password login function
   async function login() {
-    // sent post request to the backend
+    // Send login request to backend
     try {
       const response = await axios.post(
         import.meta.env.VITE_API_URL + "/api/users/login",
-        { email: email, password: password },
+        {
+          email: email,
+          password: password,
+        },
       );
 
-      // This is the token,msg and  user data send by the backend
+      // Store JWT token received from backend
       localStorage.setItem("token", response.data.token);
+
+      // Display success notification
       toast.success("Login successful!");
+
+      // Get user information from response
       const user = response.data.user;
 
-      // Move to the Dashboard according to the role send from the backend
+      // Redirect user based on role
       if (user.role == "admin") {
         navigate("/admin");
       } else {
         navigate("/");
       }
     } catch (e) {
+      // Display login error
       console.error("Login failed:", e);
-      //alert("Login failed. Please check your credentials.");
       toast.error("Login failed. Please check your credentials.");
     }
   }
 
   return (
+    // Main page container
     <div className="min-h-screen w-full relative flex items-stretch">
-      {/* Background image + gradient overlay */}
+      {/* Background image and gradient overlay */}
       <div className="absolute inset-0">
+        {/* Background image */}
         <div className="h-full w-full bg-[url('/bg.jpg')] bg-cover bg-center" />
+
+        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/70 via-secondary/40 to-primary/70" />
       </div>
 
-      {/* Layout */}
+      {/* Main page layout */}
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 w-full">
-        {/* Left side hero */}
+        {/* Left Hero Section (Visible on Large Screens Only) */}
         <div className="hidden lg:flex flex-col justify-between p-10">
+          {/* Company logo and name */}
           <div className="flex items-center gap-4">
             <img
               src="/logo.png"
@@ -79,44 +120,57 @@ export default function LoginPage() {
             </span>
           </div>
 
+          {/* Marketing content */}
           <div className="flex-1 flex items-center">
             <div className="max-w-xl space-y-6">
+              {/* Main heading */}
               <h1 className="text-5xl font-bold leading-tight text-white drop-shadow">
                 Glow on. <span className="text-accent">Shop on.</span>
               </h1>
+
+              {/* Description */}
               <p className="text-primary/90 text-lg">
                 Sign in to explore exclusive offers, track your orders, and save
                 your favorite beauty picks. Beautiful shopping—made simple.
               </p>
+
+              {/* Decorative line */}
               <div className="h-1 w-28 bg-accent rounded-full" />
             </div>
           </div>
 
+          {/* Footer */}
           <p className="text-primary/80 text-sm">
             © {new Date().getFullYear()} CBC – Crystal Beauty Clear. All rights
             reserved.
           </p>
         </div>
 
-        {/* Right side form */}
+        {/* Login Form Section */}
         <div className="flex items-center justify-center p-6 sm:p-10">
           <div className="w-full max-w-md">
+            {/* Glassmorphism Login Card */}
             <div className="rounded-3xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl p-8 sm:p-10">
+              {/* Logo and Welcome Text */}
               <div className="mb-8 flex flex-col items-center text-center">
                 <img
                   src="/logo.png"
                   alt="CBC Logo"
                   className="h-12 w-auto mb-4"
                 />
+
                 <h2 className="text-2xl font-semibold text-white">
                   Welcome back to CBC
                 </h2>
+
                 <p className="text-primary/90 text-sm">
                   Log in to continue your beauty journey and checkout faster.
                 </p>
               </div>
 
+              {/* Login Form Fields */}
               <div className="space-y-5">
+                {/* Email Input Field */}
                 <div className="space-y-2">
                   <label
                     htmlFor="email"
@@ -124,6 +178,7 @@ export default function LoginPage() {
                   >
                     Email address
                   </label>
+
                   <input
                     id="email"
                     type="email"
@@ -134,6 +189,7 @@ export default function LoginPage() {
                   />
                 </div>
 
+                {/* Password Input Field */}
                 <div className="space-y-2">
                   <label
                     htmlFor="password"
@@ -141,6 +197,7 @@ export default function LoginPage() {
                   >
                     Password
                   </label>
+
                   <input
                     id="password"
                     type="password"
@@ -151,6 +208,7 @@ export default function LoginPage() {
                   />
                 </div>
 
+                {/* Forgot Password Link */}
                 <div className="flex items-center justify-end text-sm">
                   <Link
                     to="/forget-password"
@@ -160,12 +218,15 @@ export default function LoginPage() {
                   </Link>
                 </div>
 
+                {/* Normal Login Button */}
                 <button
                   onClick={login}
                   className="w-full h-11 rounded-xl bg-accent text-white font-semibold shadow-lg shadow-accent/20 hover:brightness-110 active:scale-[0.99] transition"
                 >
                   Login
                 </button>
+
+                {/* Google Login Button */}
                 <button
                   onClick={googleLogin}
                   className="w-full h-11 rounded-xl bg-accent text-white font-semibold shadow-lg shadow-accent/20 hover:brightness-110 active:scale-[0.99] transition"
@@ -174,6 +235,7 @@ export default function LoginPage() {
                 </button>
               </div>
 
+              {/* Divider */}
               <div className="mt-8">
                 <div className="relative text-center">
                   <div className="absolute inset-0 flex items-center">
@@ -182,6 +244,7 @@ export default function LoginPage() {
                 </div>
               </div>
 
+              {/* Register Page Link */}
               <div className="mt-6 text-center text-sm text-primary/90">
                 New to CBC?{" "}
                 <Link
@@ -193,7 +256,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Small footer for mobile */}
+            {/* Mobile Footer */}
             <p className="mt-6 text-center text-primary/80 text-xs lg:hidden">
               © {new Date().getFullYear()} CBC – Crystal Beauty Clear
             </p>
