@@ -23,7 +23,6 @@ export default function LoginPage() {
 
   // Normal email/password login function
   async function login() {
-    // Send login request to backend
     try {
       const response = await axios.post(
         import.meta.env.VITE_API_URL + "/api/users/login",
@@ -49,97 +48,97 @@ export default function LoginPage() {
         navigate("/");
       }
     } catch (e) {
-      // Display login error
       console.error("Login failed:", e);
       toast.error("Login failed. Please check your credentials.");
     }
   }
 
   return (
-    // Main page container
-    <div className="min-h-screen w-full relative flex items-stretch">
-      {/* Background image and gradient overlay */}
+    // Changed min-h-screen to h-screen and added overflow-hidden to lock viewport
+    <div className="h-screen w-full relative flex items-stretch bg-[#F3E8D8] overflow-hidden">
+      {/* Background image and same blur/overlay style */}
       <div className="absolute inset-0">
-        {/* Background image */}
-        <div className="h-full w-full bg-[url('/bg.jfif')] bg-cover bg-center" />
+        <div
+          className="
+            h-full
+            w-full
+            bg-[url('/bg.jfif')]
+            bg-cover
+            bg-center
+          "
+        />
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary/70 via-secondary/40 to-primary/70" />
+        {/* Soft brown transparent overlay */}
+        <div className="absolute inset-0 bg-[#3E2723]/25" />
       </div>
 
       {/* Main page layout */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 w-full">
-        {/* Left Hero Section (Visible on Large Screens Only) */}
-        <div className="hidden lg:flex flex-col justify-between p-10">
-          {/* Company logo and name */}
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 w-full h-full">
+        {/* Left side */}
+        <div className="hidden lg:flex flex-col justify-between p-8">
           <div className="flex items-center gap-4">
             <img
               src="/logo.png"
               alt="Loop & Lace - Handmade Crochet Creations"
               className="h-10 w-auto"
             />
-            <span className="text-primary/90 tracking-wide font-semibold">
+            <span className="text-[#FFF9F0] tracking-wide font-semibold drop-shadow">
               Loop & Lace • Handcrafted Crochet
             </span>
           </div>
-
-          {/* Marketing content */}
-          <div className="flex-1 flex items-center">
-            <div className="max-w-xl space-y-6">
-              {/* Main heading */}
-              <h1 className="text-5xl font-bold leading-tight text-white drop-shadow">
-                Crafted with love.{" "}
-                <span className="text-accent">Wrapped in warmth.</span>
-              </h1>
-
-              {/* Description */}
-              <p className="text-primary/90 text-lg">
-                Sign in to explore cozy handmade cardigans, custom plushies, and
-                intricate yarn treasures. Cozy crafting—made just for you.
-              </p>
-
-              {/* Decorative line */}
-              <div className="h-1 w-28 bg-accent rounded-full" />
-            </div>
-          </div>
-
-          {/* Footer */}
-          <p className="text-primary/80 text-sm">
-            © {new Date().getFullYear()} Loop & Lace – Handcrafted Crochet. All
-            rights reserved.
-          </p>
         </div>
 
-        {/* Login Form Section */}
-        <div className="flex items-center justify-center p-6 sm:p-10">
-          <div className="w-full max-w-md">
+        {/* Login Form Section - Added overflow-y-auto so inner content scrolls if screen is very short, while outer page stays fixed */}
+        <div className="flex items-center justify-center p-4 sm:p-6 overflow-y-auto h-full">
+          <div className="w-full max-w-md my-auto">
             {/* Glassmorphism Login Card */}
-            <div className="rounded-3xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl p-8 sm:p-10">
-              {/* Logo and Welcome Text */}
-              <div className="mb-8 flex flex-col items-center text-center">
+            <div
+              className="
+                rounded-3xl
+                backdrop-blur-xl
+                bg-[#FFF9F0]/80
+                border
+                border-[#FFF9F0]/40
+                shadow-2xl
+                p-6
+                sm:p-8
+              "
+            >
+              {/* Logo and text */}
+              <div className="mb-6 flex flex-col items-center text-center">
                 <img
                   src="/logo.png"
                   alt="Loop & Lace Logo"
-                  className="h-12 w-auto mb-4"
+                  className="h-10 w-auto mb-3"
                 />
 
-                <h2 className="text-2xl font-semibold text-white">
-                  Welcome back to Loop & Lace
+                <h1 className="text-2xl font-bold leading-tight text-[#3E2723]">
+                  Crafted with love.
+                </h1>
+
+                <h2 className="text-lg font-semibold text-[#6D4C41] mt-0.5">
+                  Wrapped in warmth.
                 </h2>
 
-                <p className="text-primary/90 text-sm">
-                  Log in to track your custom orders and manage your saved yarn
-                  wishes.
+                <p className="text-[#6D4C41] text-xs sm:text-sm mt-2 leading-relaxed">
+                  Sign in to explore cozy handmade cardigans, custom plushies,
+                  and intricate yarn treasures.
                 </p>
+
+                <div className="h-1 w-20 bg-[#795548] rounded-full mt-3" />
+
+                <h2 className="text-xl font-semibold text-[#3E2723] mt-4">
+                  Welcome back
+                </h2>
               </div>
 
               {/* Login Form Fields */}
-              <div className="space-y-5">
+              <div className="space-y-4">
                 {/* Email Input Field */}
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <label
                     htmlFor="email"
-                    className="text-sm font-medium text-primary/90"
+                    className="text-sm font-medium text-[#4E342E]"
                   >
                     Email address
                   </label>
@@ -150,15 +149,30 @@ export default function LoginPage() {
                     placeholder="e.g., you@example.com"
                     autoComplete="email"
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full h-11 rounded-xl bg-white/90 text-secondary placeholder-secondary/50 px-4 outline-none ring-2 ring-transparent focus:ring-accent/60 transition"
+                    className="
+                      w-full
+                      h-10
+                      rounded-xl
+                      bg-[#FFF9F0]/90
+                      text-[#3E2723]
+                      placeholder-[#8D6E63]
+                      px-4
+                      outline-none
+                      ring-2
+                      ring-transparent
+                      focus:ring-[#795548]/40
+                      border
+                      border-[#D7C3A8]
+                      transition
+                    "
                   />
                 </div>
 
                 {/* Password Input Field */}
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <label
                     htmlFor="password"
-                    className="text-sm font-medium text-primary/90"
+                    className="text-sm font-medium text-[#4E342E]"
                   >
                     Password
                   </label>
@@ -169,7 +183,22 @@ export default function LoginPage() {
                     placeholder="Enter your password"
                     autoComplete="current-password"
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full h-11 rounded-xl bg-white/90 text-secondary placeholder-secondary/50 px-4 outline-none ring-2 ring-transparent focus:ring-accent/60 transition"
+                    className="
+                      w-full
+                      h-10
+                      rounded-xl
+                      bg-[#FFF9F0]/90
+                      text-[#3E2723]
+                      placeholder-[#8D6E63]
+                      px-4
+                      outline-none
+                      ring-2
+                      ring-transparent
+                      focus:ring-[#795548]/40
+                      border
+                      border-[#D7C3A8]
+                      transition
+                    "
                   />
                 </div>
 
@@ -177,36 +206,50 @@ export default function LoginPage() {
                 <div className="flex items-center justify-end text-sm">
                   <Link
                     to="/forget-password"
-                    className="text-accent hover:underline underline-offset-4"
+                    className="
+                      text-[#6D4C41]
+                      hover:text-[#3E2723]
+                      hover:underline
+                      underline-offset-4
+                    "
                   >
                     Forgot password?
                   </Link>
                 </div>
 
-                {/* Normal Login Button */}
+                {/* Login Button */}
                 <button
                   onClick={login}
-                  className="w-full h-11 rounded-xl bg-accent text-white font-semibold shadow-lg shadow-accent/20 hover:brightness-110 active:scale-[0.99] transition"
+                  className="
+                    w-full
+                    h-10
+                    rounded-xl
+                    bg-[#5D4037]
+                    text-[#FFF9F0]
+                    font-semibold
+                    shadow-lg
+                    shadow-[#3E2723]/20
+                    hover:bg-[#4E342E]
+                    active:scale-[0.99]
+                    transition
+                  "
                 >
                   Login
                 </button>
               </div>
 
-              {/* Divider */}
-              <div className="mt-8">
-                <div className="relative text-center">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-white/20"></span>
-                  </div>
-                </div>
-              </div>
-
               {/* Register Page Link */}
-              <div className="mt-6 text-center text-sm text-primary/90">
+              <div className="mt-5 text-center text-sm text-[#6D4C41]">
                 New to Loop & Lace?{" "}
                 <Link
                   to="/register"
-                  className="text-accent hover:underline underline-offset-4"
+                  className="
+                    text-[#4E342E]
+                    font-semibold
+                    hover:text-[#3E2723]
+                    hover:underline
+                    underline-offset-4
+                  "
                 >
                   Create your account
                 </Link>
@@ -214,7 +257,7 @@ export default function LoginPage() {
             </div>
 
             {/* Mobile Footer */}
-            <p className="mt-6 text-center text-primary/80 text-xs lg:hidden">
+            <p className="mt-4 text-center text-[#FFF9F0]/90 text-xs lg:hidden">
               © {new Date().getFullYear()} Loop & Lace – Handcrafted Crochet
             </p>
           </div>
