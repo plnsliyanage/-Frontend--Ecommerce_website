@@ -54,48 +54,82 @@ export default function RegisterPage() {
       navigate("/login");
     } catch (e) {
       // Display error in browser console
-      console.error("Login failed:", e);
+      console.error("Registration failed:", e);
 
       // Show error notification
-      toast.error("Login failed. Please check your credentials.");
+      toast.error("Registration failed. Please check your credentials.");
     }
   }
 
   return (
-    // Main container
-    <div className="min-h-screen w-full relative flex items-stretch">
+    // Main container - locked to viewport height, no outer scrolling
+    <div className="h-screen w-full relative flex items-stretch bg-[#F3E8D8] overflow-hidden">
       {/* Background image and overlay */}
       <div className="absolute inset-0">
-        {/* Background image */}
-        <div className="h-full w-full bg-[url('/bg.jpg')] bg-cover bg-center" />
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary/70 via-secondary/40 to-primary/70" />
+        <div className="h-full w-full bg-[url('/bg.jfif')] bg-cover bg-center" />
+        {/* Soft brown transparent overlay matching login page */}
+        <div className="absolute inset-0 bg-[#3E2723]/25" />
       </div>
 
       {/* Main page layout */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 w-full">
-        {/* Registration form section */}
-        <div className="flex items-center justify-center p-6 sm:p-10">
-          <div className="w-full max-w-md">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 w-full h-full">
+        {/* Left side brand section (Visible on desktop) */}
+        <div className="hidden lg:flex flex-col justify-between p-8">
+          <div className="flex items-center gap-4">
+            <img
+              src="/logo.png"
+              alt="CBC - Crystal Beauty Clear"
+              className="h-10 w-auto"
+            />
+            <span className="text-[#FFF9F0] tracking-wide font-semibold drop-shadow">
+              CBC • Crystal Beauty Clear
+            </span>
+          </div>
+
+          <div className="max-w-xl space-y-4">
+            <h1 className="text-4xl font-bold leading-tight text-[#3E2723] drop-shadow">
+              Glow on. <span className="text-[#795548]">Shop on.</span>
+            </h1>
+            <p className="text-[#6D4C41] text-sm">
+              Register to explore exclusive offers, track your orders, and save
+              your favorite beauty picks. Beautiful shopping—made simple.
+            </p>
+            <div className="h-1 w-20 bg-[#795548] rounded-full" />
+          </div>
+
+          <p className="text-[#FFF9F0]/80 text-xs">
+            © {new Date().getFullYear()} CBC – Crystal Beauty Clear. All rights
+            reserved.
+          </p>
+        </div>
+
+        {/* Registration Form Section - Internally scrollable if needed */}
+        <div className="flex items-center justify-center p-4 sm:p-6 overflow-y-auto h-full">
+          <div className="w-full max-w-md my-auto">
             {/* Glassmorphism card */}
-            <div className="rounded-3xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl p-8 sm:p-10">
-              {/* Company logo */}
-              <div className="mb-8 flex flex-col items-center text-center">
+            <div className="rounded-3xl backdrop-blur-xl bg-[#FFF9F0]/80 border border-[#FFF9F0]/40 shadow-2xl p-6 sm:p-8">
+              {/* Company logo & Header */}
+              <div className="mb-6 flex flex-col items-center text-center">
                 <img
                   src="/logo.png"
                   alt="CBC Logo"
-                  className="h-12 w-auto mb-4"
+                  className="h-10 w-auto mb-3"
                 />
+                <h2 className="text-xl font-bold text-[#3E2723]">
+                  Create your account
+                </h2>
+                <p className="text-[#6D4C41] text-xs mt-1">
+                  Join Crystal Beauty Clear today
+                </p>
               </div>
 
               {/* Registration form fields */}
-              <div className="space-y-5">
+              <div className="space-y-3.5">
                 {/* Email input field */}
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <label
                     htmlFor="email"
-                    className="text-sm font-medium text-primary/90"
+                    className="text-xs font-medium text-[#4E342E]"
                   >
                     Email address
                   </label>
@@ -105,15 +139,15 @@ export default function RegisterPage() {
                     placeholder="e.g., you@example.com"
                     autoComplete="email"
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full h-11 rounded-xl bg-white/90 text-secondary placeholder-secondary/50 px-4 outline-none ring-2 ring-transparent focus:ring-accent/60 transition"
+                    className="w-full h-10 rounded-xl bg-[#FFF9F0]/90 text-[#3E2723] placeholder-[#8D6E63] px-4 outline-none ring-2 ring-transparent focus:ring-[#795548]/40 border border-[#D7C3A8] transition text-sm"
                   />
                 </div>
 
                 {/* First name input field */}
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <label
                     htmlFor="firstName"
-                    className="text-sm font-medium text-primary/90"
+                    className="text-xs font-medium text-[#4E342E]"
                   >
                     First Name
                   </label>
@@ -123,15 +157,15 @@ export default function RegisterPage() {
                     placeholder="e.g., John"
                     autoComplete="given-name"
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full h-11 rounded-xl bg-white/90 text-secondary placeholder-secondary/50 px-4 outline-none ring-2 ring-transparent focus:ring-accent/60 transition"
+                    className="w-full h-10 rounded-xl bg-[#FFF9F0]/90 text-[#3E2723] placeholder-[#8D6E63] px-4 outline-none ring-2 ring-transparent focus:ring-[#795548]/40 border border-[#D7C3A8] transition text-sm"
                   />
                 </div>
 
                 {/* Last name input field */}
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <label
                     htmlFor="lastName"
-                    className="text-sm font-medium text-primary/90"
+                    className="text-xs font-medium text-[#4E342E]"
                   >
                     Last Name
                   </label>
@@ -139,17 +173,17 @@ export default function RegisterPage() {
                     id="lastName"
                     type="text"
                     placeholder="e.g., Doe"
-                    autoComplete="family_name"
+                    autoComplete="family-name"
                     onChange={(e) => setLastName(e.target.value)}
-                    className="w-full h-11 rounded-xl bg-white/90 text-secondary placeholder-secondary/50 px-4 outline-none ring-2 ring-transparent focus:ring-accent/60 transition"
+                    className="w-full h-10 rounded-xl bg-[#FFF9F0]/90 text-[#3E2723] placeholder-[#8D6E63] px-4 outline-none ring-2 ring-transparent focus:ring-[#795548]/40 border border-[#D7C3A8] transition text-sm"
                   />
                 </div>
 
                 {/* Password input field */}
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <label
                     htmlFor="password"
-                    className="text-sm font-medium text-primary/90"
+                    className="text-xs font-medium text-[#4E342E]"
                   >
                     Password
                   </label>
@@ -157,102 +191,56 @@ export default function RegisterPage() {
                     id="password"
                     type="password"
                     placeholder="Enter your password"
-                    autoComplete="current-password"
+                    autoComplete="new-password"
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full h-11 rounded-xl bg-white/90 text-secondary placeholder-secondary/50 px-4 outline-none ring-2 ring-transparent focus:ring-accent/60 transition"
+                    className="w-full h-10 rounded-xl bg-[#FFF9F0]/90 text-[#3E2723] placeholder-[#8D6E63] px-4 outline-none ring-2 ring-transparent focus:ring-[#795548]/40 border border-[#D7C3A8] transition text-sm"
                   />
                 </div>
 
                 {/* Confirm password input field */}
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <label
                     htmlFor="confirmPassword"
-                    className="text-sm font-medium text-primary/90"
+                    className="text-xs font-medium text-[#4E342E]"
                   >
                     Confirm Password
                   </label>
                   <input
                     id="confirmPassword"
                     type="password"
-                    placeholder="Enter your password"
-                    autoComplete="current-password"
+                    placeholder="Confirm your password"
+                    autoComplete="new-password"
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full h-11 rounded-xl bg-white/90 text-secondary placeholder-secondary/50 px-4 outline-none ring-2 ring-transparent focus:ring-accent/60 transition"
+                    className="w-full h-10 rounded-xl bg-[#FFF9F0]/90 text-[#3E2723] placeholder-[#8D6E63] px-4 outline-none ring-2 ring-transparent focus:ring-[#795548]/40 border border-[#D7C3A8] transition text-sm"
                   />
                 </div>
 
                 {/* Register button */}
                 <button
                   onClick={register}
-                  className="w-full h-11 rounded-xl bg-accent text-white font-semibold shadow-lg shadow-accent/20 hover:brightness-110 active:scale-[0.99] transition"
+                  className="w-full h-10 rounded-xl bg-[#5D4037] text-[#FFF9F0] font-semibold shadow-lg shadow-[#3E2723]/20 hover:bg-[#4E342E] active:scale-[0.99] transition text-sm mt-1"
                 >
                   Register
                 </button>
               </div>
 
-              {/* Divider line */}
-              <div className="mt-8">
-                <div className="relative text-center">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-white/20"></span>
-                  </div>
-                </div>
-              </div>
-
               {/* Link to login page */}
-              <div className="mt-6 text-center text-sm text-primary/90">
-                Already have and account?{" "}
+              <div className="mt-5 text-center text-sm text-[#6D4C41]">
+                Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-accent hover:underline underline-offset-4"
+                  className="text-[#4E342E] font-semibold hover:text-[#3E2723] hover:underline underline-offset-4"
                 >
-                  Login your account
+                  Login here
                 </Link>
               </div>
             </div>
 
             {/* Mobile footer */}
-            <p className="mt-6 text-center text-primary/80 text-xs lg:hidden">
+            <p className="mt-4 text-center text-[#FFF9F0]/90 text-xs lg:hidden">
               © {new Date().getFullYear()} CBC – Crystal Beauty Clear
             </p>
           </div>
-        </div>
-
-        {/* Hero section shown only on large screens */}
-        <div className="hidden lg:flex flex-col justify-between p-10">
-          {/* Logo and company name */}
-          <div className="flex items-center gap-4">
-            <img
-              src="/logo.png"
-              alt="CBC - Crystal Beauty Clear"
-              className="h-10 w-auto"
-            />
-            <span className="text-primary/90 tracking-wide font-semibold">
-              CBC • Crystal Beauty Clear
-            </span>
-          </div>
-
-          {/* Marketing content */}
-          <div className="flex-1 flex items-center">
-            <div className="max-w-xl space-y-6">
-              <h1 className="text-5xl font-bold leading-tight text-white drop-shadow">
-                Glow on. <span className="text-accent">Shop on.</span>
-              </h1>
-              <p className="text-primary/90 text-lg">
-                Register to explore exclusive offers, track your orders, and
-                save your favorite beauty picks. Beautiful shopping—made simple.
-              </p>
-
-              {/* Decorative line */}
-              <div className="h-1 w-28 bg-accent rounded-full" />
-            </div>
-          </div>
-
-          {/* Desktop footer */}
-          <p className="text-primary/80 text-sm">
-            © {new Date().getFullYear()} CBC – Crystal Beauty Clear. All rights
-            reserved.
-          </p>
         </div>
       </div>
     </div>
