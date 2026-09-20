@@ -1,6 +1,3 @@
-// Import Google OAuth login hook
-import { useGoogleLogin } from "@react-oauth/google";
-
 // Import Axios for making HTTP requests
 import axios from "axios";
 
@@ -23,40 +20,6 @@ export default function LoginPage() {
 
   // Hook used for page navigation
   const navigate = useNavigate();
-
-  // Google Login Configuration
-  const googleLogin = useGoogleLogin({
-    // Executes when Google authentication is successful
-    onSuccess: (response) => {
-      // Send Google access token to backend
-      axios
-        .post(import.meta.env.VITE_API_URL + "/api/users/google-login", {
-          token: response.access_token,
-        })
-
-        // Handle successful backend response
-        .then((res) => {
-          // Store JWT token in browser local storage
-          localStorage.setItem("token", res.data.token);
-
-          // Get logged-in user information
-          const user = res.data.user;
-
-          // Redirect based on user role
-          if (user.role == "admin") {
-            navigate("/admin");
-          } else {
-            navigate("/");
-          }
-        })
-
-        // Handle Google login errors
-        .catch((err) => {
-          console.error("Google login failed:", err);
-          toast.error("Google login failed. Please try again.");
-        });
-    },
-  });
 
   // Normal email/password login function
   async function login() {
@@ -98,7 +61,7 @@ export default function LoginPage() {
       {/* Background image and gradient overlay */}
       <div className="absolute inset-0">
         {/* Background image */}
-        <div className="h-full w-full bg-[url('/bg.jpg')] bg-cover bg-center" />
+        <div className="h-full w-full bg-[url('/bg.jfif')] bg-cover bg-center" />
 
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-secondary/70 via-secondary/40 to-primary/70" />
@@ -112,11 +75,11 @@ export default function LoginPage() {
           <div className="flex items-center gap-4">
             <img
               src="/logo.png"
-              alt="CBC - Crystal Beauty Clear"
+              alt="Loop & Lace - Handmade Crochet Creations"
               className="h-10 w-auto"
             />
             <span className="text-primary/90 tracking-wide font-semibold">
-              CBC • Crystal Beauty Clear
+              Loop & Lace • Handcrafted Crochet
             </span>
           </div>
 
@@ -125,13 +88,14 @@ export default function LoginPage() {
             <div className="max-w-xl space-y-6">
               {/* Main heading */}
               <h1 className="text-5xl font-bold leading-tight text-white drop-shadow">
-                Glow on. <span className="text-accent">Shop on.</span>
+                Crafted with love.{" "}
+                <span className="text-accent">Wrapped in warmth.</span>
               </h1>
 
               {/* Description */}
               <p className="text-primary/90 text-lg">
-                Sign in to explore exclusive offers, track your orders, and save
-                your favorite beauty picks. Beautiful shopping—made simple.
+                Sign in to explore cozy handmade cardigans, custom plushies, and
+                intricate yarn treasures. Cozy crafting—made just for you.
               </p>
 
               {/* Decorative line */}
@@ -141,8 +105,8 @@ export default function LoginPage() {
 
           {/* Footer */}
           <p className="text-primary/80 text-sm">
-            © {new Date().getFullYear()} CBC – Crystal Beauty Clear. All rights
-            reserved.
+            © {new Date().getFullYear()} Loop & Lace – Handcrafted Crochet. All
+            rights reserved.
           </p>
         </div>
 
@@ -155,16 +119,17 @@ export default function LoginPage() {
               <div className="mb-8 flex flex-col items-center text-center">
                 <img
                   src="/logo.png"
-                  alt="CBC Logo"
+                  alt="Loop & Lace Logo"
                   className="h-12 w-auto mb-4"
                 />
 
                 <h2 className="text-2xl font-semibold text-white">
-                  Welcome back to CBC
+                  Welcome back to Loop & Lace
                 </h2>
 
                 <p className="text-primary/90 text-sm">
-                  Log in to continue your beauty journey and checkout faster.
+                  Log in to track your custom orders and manage your saved yarn
+                  wishes.
                 </p>
               </div>
 
@@ -225,14 +190,6 @@ export default function LoginPage() {
                 >
                   Login
                 </button>
-
-                {/* Google Login Button */}
-                <button
-                  onClick={googleLogin}
-                  className="w-full h-11 rounded-xl bg-accent text-white font-semibold shadow-lg shadow-accent/20 hover:brightness-110 active:scale-[0.99] transition"
-                >
-                  Google Login
-                </button>
               </div>
 
               {/* Divider */}
@@ -246,7 +203,7 @@ export default function LoginPage() {
 
               {/* Register Page Link */}
               <div className="mt-6 text-center text-sm text-primary/90">
-                New to CBC?{" "}
+                New to Loop & Lace?{" "}
                 <Link
                   to="/register"
                   className="text-accent hover:underline underline-offset-4"
@@ -258,7 +215,7 @@ export default function LoginPage() {
 
             {/* Mobile Footer */}
             <p className="mt-6 text-center text-primary/80 text-xs lg:hidden">
-              © {new Date().getFullYear()} CBC – Crystal Beauty Clear
+              © {new Date().getFullYear()} Loop & Lace – Handcrafted Crochet
             </p>
           </div>
         </div>
