@@ -78,27 +78,27 @@ export default function RegisterPage() {
           <div className="flex items-center gap-4">
             <img
               src="/logo.png"
-              alt="CBC - Crystal Beauty Clear"
+              alt="Loop & Lace logo"
               className="h-10 w-auto"
             />
             <span className="text-[#FFF9F0] tracking-wide font-semibold drop-shadow">
-              CBC • Crystal Beauty Clear
+              Loop & Lace • Handcrafted Crochet
             </span>
           </div>
 
           <div className="max-w-xl space-y-4">
             <h1 className="text-4xl font-bold leading-tight text-[#3E2723] drop-shadow">
-              Glow on. <span className="text-[#795548]">Shop on.</span>
+              Cozy looks. <span className="text-[#795548]">Handmade with care.</span>
             </h1>
             <p className="text-[#6D4C41] text-sm">
-              Register to explore exclusive offers, track your orders, and save
-              your favorite beauty picks. Beautiful shopping—made simple.
+              Register to discover crochet cardigans, tops, bags, and seasonal
+              handmade collections designed for comfort.
             </p>
             <div className="h-1 w-20 bg-[#795548] rounded-full" />
           </div>
 
           <p className="text-[#FFF9F0]/80 text-xs">
-            © {new Date().getFullYear()} CBC – Crystal Beauty Clear. All rights
+            © {new Date().getFullYear()} Loop & Lace – Handcrafted Crochet. All rights
             reserved.
           </p>
         </div>
@@ -112,14 +112,14 @@ export default function RegisterPage() {
               <div className="mb-6 flex flex-col items-center text-center">
                 <img
                   src="/logo.png"
-                  alt="CBC Logo"
+                  alt="Loop & Lace Logo"
                   className="h-10 w-auto mb-3"
                 />
                 <h2 className="text-xl font-bold text-[#3E2723]">
                   Create your account
                 </h2>
                 <p className="text-[#6D4C41] text-xs mt-1">
-                  Join Crystal Beauty Clear today
+                  Join Loop & Lace today
                 </p>
               </div>
 
@@ -238,7 +238,7 @@ export default function RegisterPage() {
 
             {/* Mobile footer */}
             <p className="mt-4 text-center text-[#FFF9F0]/90 text-xs lg:hidden">
-              © {new Date().getFullYear()} CBC – Crystal Beauty Clear
+              © {new Date().getFullYear()} Loop & Lace – Handcrafted Crochet
             </p>
           </div>
         </div>

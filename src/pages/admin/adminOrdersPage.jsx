@@ -32,7 +32,7 @@ export default function AdminOrdersPage() {
           setIsLoading(false);
         });
     }
-  }, [isLoading]);
+  }, [isLoading, navigate]);
 
   return (
     <div className="w-full min-h-full">

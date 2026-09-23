@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { BiSolidEdit } from "react-icons/bi";
 import { IoMdAddCircleOutline } from "react-icons/io"
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Loader } from "../../components/loader.jsx";
 import toast from "react-hot-toast"
 

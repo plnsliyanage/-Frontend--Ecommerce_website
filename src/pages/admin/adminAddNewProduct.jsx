@@ -12,7 +12,7 @@ export default function AddProductPage() {
     const [images, setImages] = useState([])
     const [price, setPrice] = useState(0)
     const [labelledPrice, setLabelledPrice] = useState(0)
-    const [category, setCategory] = useState("cream")
+    const [category, setCategory] = useState("tops")
     const [stock, setStock] = useState(0)
     const navigate = useNavigate()
 
@@ -135,9 +135,10 @@ export default function AddProductPage() {
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
                         >
-                            <option value="cream">Cream</option>
-                            <option value="lotion">Lotion</option>
-                            <option value="serum">Serum</option>
+                            <option value="tops">Tops</option>
+                            <option value="outerwear">Outerwear</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="dresses">Dresses</option>
                         </select>
                     </div>
 

@@ -12,7 +12,7 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState("");
   const [name, setName] = useState("");
 
-  const [cart, setCart] = useState(location.state);
+  const [cart, setCart] = useState(Array.isArray(location.state) ? location.state : []);
 
   function getTotal() {
     let total = 0;
@@ -30,6 +30,14 @@ export default function CheckoutPage() {
       return;
     }
     try {
+      if (!address.trim()) {
+        toast.error("Please provide a shipping address");
+        return;
+      }
+      if (cart.length === 0) {
+        toast.error("Your cart is empty");
+        return;
+      }
       const items = [];
 
       for (let i = 0; i < cart.length; i++) {
@@ -68,6 +76,14 @@ export default function CheckoutPage() {
   return (
     <div className="w-full lg:h-[calc(100vh-100px)] overflow-y-scroll bg-primary flex flex-col pt-[25px] items-center">
       <div className="w-[400px] lg:w-[600px] flex flex-col gap-4 ">
+        {cart.length === 0 && (
+          <div className="w-full bg-white p-8 text-center rounded-xl">
+            <p className="text-secondary/80">No items ready for checkout.</p>
+            <Link to="/products" className="mt-4 inline-block text-accent font-medium">
+              Continue shopping
+            </Link>
+          </div>
+        )}
         {cart.map((item, index) => {
           return (
             <div
@@ -83,6 +99,7 @@ export default function CheckoutPage() {
               <img
                 className="h-[100px] lg:h-full aspect-square object-cover"
                 src={item.image}
+                alt={item.name}
               />
               <div className="w-full text-center lg:w-[200px] h-[100px] lg:h-full flex flex-col pl-[5px] pt-[10px] ">
                 <h1 className=" font-semibold text-lg w-full text-wrap">
@@ -159,8 +176,8 @@ export default function CheckoutPage() {
         </div>
         <div className="w-full lg:w-full h-[120px] bg-white flex flex-col-reverse  lg:flex-row justify-end items-center relative">
           <button
-            to="/checkout"
             onClick={purchaseCart}
+            disabled={cart.length === 0}
             className="lg:absolute left-0 bg-accent text-white px-6 py-3  lg:ml-[20px] hover:bg-accent/80"
           >
             Order

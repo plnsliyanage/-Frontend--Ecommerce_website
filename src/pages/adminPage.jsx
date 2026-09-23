@@ -6,14 +6,13 @@ import { HiOutlineUsers } from "react-icons/hi";
 import AdminProductPage from "./admin/adminProductPage";
 import AddProductPage from "./admin/adminAddNewProduct";
 import UpdateProductPage from "./admin/adminUpdateProduct";
+import AdminOrdersPage from "./admin/adminOrdersPage";
+import AdminUsersPage from "./admin/usersPage";
 
 export default function AdminPage() {
   return (
     <div className="w-full h-full bg-primary flex p-2 text-secondary">
-      <div
-        className="w-[300px] h-full bg-primary flex flex-col items-center gap-[20px] mb-[20px]>
-"
-      >
+      <div className="w-[300px] h-full bg-primary flex flex-col items-center gap-[20px] mb-[20px]">
         <div className="flex flex-row w-[90%] bg-accent h-[75px] items-center rounded-2xl">
           <img src="/logo.png" alt="Logo" className="h-[100px]" />
           <span className="text-white text-xl ml-4">Admin panel</span>
@@ -52,11 +51,12 @@ export default function AdminPage() {
       <div className="w-[calc(100%-300px)] h-full border-[4px] border-accent  rounded-2xl overflow-hidden">
         <div className=" w-full max-w-full h-full max-h-full ">
           <Routes>
-            <Route path="/" element={<h1>dash board</h1>} />
-            <Route path="/products" element={<AdminProductPage />} />
-            <Route path="/orders" element={<h1>Orders</h1>} />
-            <Route path="/add-product" element={<AddProductPage />} />
-            <Route path="/update-product" element={<UpdateProductPage />} />
+            <Route path="/" element={<h1 className="p-4">dash board</h1>} />
+            <Route path="products" element={<AdminProductPage />} />
+            <Route path="orders" element={<AdminOrdersPage />} />
+            <Route path="users" element={<AdminUsersPage />} />
+            <Route path="add-product" element={<AddProductPage />} />
+            <Route path="update-product" element={<UpdateProductPage />} />
           </Routes>
         </div>
       </div>

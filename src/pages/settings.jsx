@@ -44,7 +44,7 @@ export default function UserSettings() {
     };
     if (image != null) {
       const link = await mediaUpload(image);
-      image.profilePicture = link;
+      data.image = link;
     }
 
     await axios
@@ -95,7 +95,7 @@ export default function UserSettings() {
     password && confirmPassword && password !== confirmPassword;
 
   return (
-    <div className="w-full h-full bg-[url('/bg.jpg')] bg-cover bg-center bg-no-repeat flex flex-col lg:flex-row justify-center">
+    <div className="w-full h-full bg-[url('/bg.jfif')] bg-cover bg-center bg-no-repeat flex flex-col lg:flex-row justify-center">
       {/* Left: User Info */}
       <div className="w-full lg:w-[40%] backdrop-blur-2xl rounded-2xl m-8 p-6 flex flex-col bg-primary/70 shadow-xl ring-1 ring-secondary/10">
         <h1 className="text-2xl font-bold mb-6 text-center text-secondary">

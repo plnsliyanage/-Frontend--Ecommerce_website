@@ -157,8 +157,8 @@ export default function UserData() {
                 label="Account Settings"
               />
               <MenuItem
-                onClick={() => (window.location.href = "/orders")}
-                label="Orders"
+                onClick={() => (window.location.href = "/cart")}
+                label="Cart & Checkout"
               />
               <div className="my-1 h-px bg-secondary/10" />
               <MenuItem destructive onClick={handleLogout} label="Logout" />

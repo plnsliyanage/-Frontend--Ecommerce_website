@@ -28,6 +28,10 @@ export default function ProductPage() {
     <div className="w-full min-h-[calc(100vh-100px)] bg-primary">
       {isLoading ? (
         <Loader />
+      ) : products.length === 0 ? (
+        <div className="w-full min-h-[300px] flex items-center justify-center text-secondary/80">
+          No products available right now.
+        </div>
       ) : (
         <div className="w-full h-full flex flex-row flex-wrap justify-center bg-primary">
           {products.map((item) => {

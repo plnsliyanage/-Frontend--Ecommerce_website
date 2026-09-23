@@ -1,20 +1,21 @@
 import { Link } from "react-router-dom";
+import UserData from "./userData";
 
 export default function Header() {
   return (
-    <header className="w-full bg-[#2D1810] h-[90px] text-[#F5F1E9] px-6 md:px-12 shadow-md">
-      <div className="w-full h-full flex items-center justify-between">
+    <header className="w-full bg-[#2D1810] text-[#F5F1E9] px-4 md:px-8 shadow-md">
+      <div className="w-full min-h-[90px] py-3 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         {/* Logo / Brand */}
         <div className="flex items-center gap-2">
           <img
-            src="logo.png"
-            alt="Logo"
+            src="/logo.png"
+            alt="Loop and Lace logo"
             className="w-[140px] h-[55px] object-contain rounded"
           />
         </div>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8 font-medium">
+        <nav className="flex items-center gap-5 md:gap-8 font-medium text-sm md:text-base">
           <Link to="/" className="hover:text-[#D4B59D] transition-colors">
             Home
           </Link>
@@ -33,17 +34,12 @@ export default function Header() {
           >
             Contacts
           </Link>
+          <Link to="/cart" className="hover:text-[#D4B59D] transition-colors">
+            Cart
+          </Link>
         </nav>
 
-        {/* Logout Button */}
-        <div>
-          <button
-            onClick={() => console.log("Logged out")}
-            className="bg-[#F5F1E9] text-[#2D1810] px-5 py-2 rounded-lg font-semibold hover:bg-[#D4B59D] transition-all shadow-sm"
-          >
-            Logout
-          </button>
-        </div>
+        <UserData />
       </div>
     </header>
   );

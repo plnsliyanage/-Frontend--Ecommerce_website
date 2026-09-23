@@ -147,9 +147,10 @@ export default function UpdateProductPage() {
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
                         >
-                            <option value="cream">Cream</option>
-                            <option value="lotion">Lotion</option>
-                            <option value="serum">Serum</option>
+                            <option value="tops">Tops</option>
+                            <option value="outerwear">Outerwear</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="dresses">Dresses</option>
                         </select>
                     </div>
 

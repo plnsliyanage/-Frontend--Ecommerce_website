@@ -4,7 +4,7 @@ export default function ProductCard(props) {
     const product = props.product;
     return (
         <div className="w-[300px] h-[400px] shadow-2xl m-3 flex flex-col p-[10px]">
-            <img className="w-full h-[250px] object-cover" src={product.images[0]} />
+            <img className="w-full h-[250px] object-cover" src={product.images?.[0]} alt={product.name + " product image"} />
             <h1 className="text-xl font-bold text-secondary">{product.name}</h1>
             {
                 product.labelledPrice > product.price ?

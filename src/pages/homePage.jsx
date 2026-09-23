@@ -2,6 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import Header from "../components/header";
 import ProductPage from "./productPage";
 import ProductOverview from "./productOverview";
+import CartPage from "./cart";
+import CheckoutPage from "./checkout";
 
 import hero1 from "../assets/hero1.jfif";
 import hero2 from "../assets/hero2.jfif";
@@ -12,30 +14,30 @@ import hero5 from "../assets/hero5.jfif";
 import { useEffect, useState } from "react";
 
 // Sample product data
-const products = [
+const featuredProducts = [
   {
     id: 1,
-    name: "Classic T-Shirt",
+    name: "Crochet Summer Top",
     price: 2500,
-    category: "Clothing",
+    category: "Tops",
     image: "https://via.placeholder.com/300",
-    description: "A comfortable cotton T-shirt for everyday use.",
+    description: "Breathable handmade crochet top for everyday comfort.",
   },
   {
     id: 2,
-    name: "Running Shoes",
+    name: "Crochet Cardigan",
     price: 8500,
-    category: "Shoes",
+    category: "Outerwear",
     image: "https://via.placeholder.com/300",
-    description: "Lightweight running shoes suitable for daily workouts.",
+    description: "Soft, warm cardigan crafted with textured yarn patterns.",
   },
   {
     id: 3,
-    name: "Leather Backpack",
+    name: "Crochet Tote Bag",
     price: 6500,
-    category: "Bags",
+    category: "Accessories",
     image: "https://via.placeholder.com/300",
-    description: "A stylish and durable backpack for work and travel.",
+    description: "Durable handwoven tote for market days and travel.",
   },
 ];
 
@@ -74,13 +76,16 @@ function HeroSection() {
       {/* Hero content */}
       <div className="absolute inset-0 flex items-center justify-center text-center">
         <div className="text-white">
-          <h1 className="text-5xl font-bold mb-4">Welcome to Our Store</h1>
+          <h1 className="text-5xl font-bold mb-4">Welcome to Loop & Lace</h1>
 
-          <p className="text-xl mb-6">Discover products you'll love</p>
+          <p className="text-xl mb-6">Cozy handmade crochet clothing and accessories</p>
 
-          <button className="px-6 py-3 bg-white text-black rounded-lg font-semibold hover:bg-gray-200 transition">
+          <a
+            href="/products"
+            className="inline-block px-6 py-3 bg-white text-black rounded-lg font-semibold hover:bg-gray-200 transition"
+          >
             Shop Now
-          </button>
+          </a>
         </div>
       </div>
 
@@ -102,7 +107,7 @@ function HeroSection() {
 
 export default function HomePage() {
   return (
-    <div className="w-full min-h-screen bg-primary">
+    <div className="w-full min-h-screen bg-primary text-secondary">
       <Header />
 
       <Routes>
@@ -116,30 +121,62 @@ export default function HomePage() {
               {/* Products preview */}
               <section className="py-12 px-6">
                 <h2 className="text-3xl font-bold text-center mb-8">
-                  Our Products
+                  Featured Crochet Picks
                 </h2>
-
-                <p className="text-center">
-                  Available Products: {products.length}
-                </p>
+                <div className="mx-auto max-w-5xl grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {featuredProducts.map((item) => (
+                    <article
+                      key={item.id}
+                      className="rounded-2xl border border-secondary/10 bg-white p-4 shadow-sm"
+                    >
+                      <h3 className="text-lg font-semibold">{item.name}</h3>
+                      <p className="text-sm text-secondary/70">{item.description}</p>
+                      <p className="mt-2 text-sm font-medium text-accent">{item.category}</p>
+                    </article>
+                  ))}
+                </div>
               </section>
             </div>
           }
         />
 
         {/* Product page */}
-        <Route path="/products" element={<ProductPage products={products} />} />
+        <Route path="/products" element={<ProductPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
 
         {/* Contact page */}
-        <Route path="/contacts" element={<h1>Contact</h1>} />
+        <Route
+          path="/contacts"
+          element={
+            <div className="mx-auto max-w-3xl px-6 py-10">
+              <h1 className="text-2xl font-semibold">Contact Us</h1>
+              <p className="mt-2 text-secondary/80">
+                Need sizing help or custom crochet requests? Email us at
+                support@loopandlace.com.
+              </p>
+            </div>
+          }
+        />
 
         {/* About page */}
-        <Route path="/about" element={<h1>About</h1>} />
+        <Route
+          path="/about"
+          element={
+            <div className="mx-auto max-w-3xl px-6 py-10">
+              <h1 className="text-2xl font-semibold">About Loop & Lace</h1>
+              <p className="mt-2 text-secondary/80">
+                We craft crochet clothing with soft yarn, timeless patterns, and
+                comfortable fits for every season.
+              </p>
+            </div>
+          }
+        />
 
         {/* Product overview */}
         <Route
           path="/overview/:id"
-          element={<ProductOverview products={products} />}
+          element={<ProductOverview />}
         />
 
         {/* 404 page */}

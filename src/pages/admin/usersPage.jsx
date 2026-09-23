@@ -1,10 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { CiCirclePlus } from "react-icons/ci";
-import { FaRegEdit } from "react-icons/fa";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Loader } from "../../components/loader";
 import { MdOutlineAdminPanelSettings, MdVerified } from "react-icons/md";
 
@@ -97,7 +94,7 @@ export default function AdminUsersPage() {
           setIsLoading(false);
         });
     }
-  }, [isLoading]);
+  }, [isLoading, navigate]);
 
   return (
     <div className="w-full min-h-full">

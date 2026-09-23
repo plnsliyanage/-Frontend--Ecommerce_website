@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 import { Loader } from "../components/loader";
+import ImageSlider from "../components/imageSlider";
+import { addToCart } from "../utils/cart";
 
 export default function ProductOverview() {
   const params = useParams();
@@ -20,7 +22,7 @@ export default function ProductOverview() {
         toast.error("Failed to fetch product details");
         setStatus("error");
       });
-  }, []);
+  }, [params.id]);
 
   return (
     <div className="w-full  lg:h-[calc(100vh-100px)] text-secondary bg-primary">
@@ -31,13 +33,13 @@ export default function ProductOverview() {
             {product.name}
           </h1>
           <div className=" w-full lg:w-[50%]  h-full flex justify-center items-center">
-            <ImageSlider images={product.images} />
+            <ImageSlider images={product.images ?? []} />
           </div>
           <div className="w-full lg:w-[50%]   h-full flex flex-col bg-primary  items-center gap-4 p-10">
             <span className="">{product.productID}</span>
             <h1 className="text-2xl font-bold text-center">
               {product.name}
-              {product.altNames.map((name, index) => {
+              {(product.altNames ?? []).map((name, index) => {
                 return (
                   <span key={index} className=" font-normal text-secondary">
                     {" | " + name}
@@ -78,7 +80,7 @@ export default function ProductOverview() {
                 to="/checkout"
                 state={[
                   {
-                    image: product.images[0],
+                    image: product.images?.[0] ?? "",
                     productID: product.productID,
                     name: product.name,
                     price: product.price,
