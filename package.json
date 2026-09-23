@@ -15,6 +15,7 @@
     "@tailwindcss/vite": "^4.1.16",
     "axios": "^1.12.2",
     "icons": "^1.0.0",
+    "lucide": "^1.47.0",
     "react": "^19.2.0",
     "react-dom": "^19.1.1",
     "react-hot-toast": "^2.6.0",
