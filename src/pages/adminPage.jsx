@@ -14,6 +14,7 @@ import { HiOutlineUsers } from "react-icons/hi";
 import AdminProductPage from "./admin/adminProductPage";
 import AddProductPage from "./admin/adminAddNewProduct";
 import UpdateProductPage from "./admin/adminUpdateProduct";
+import AdminOrdersPage from "./admin/adminOrdersPage"; // Adjust the path based on where your file is saved
 
 // Sample dashboard data for preview
 const recentOrders = [
@@ -300,14 +301,7 @@ export default function AdminPage() {
               }
             />
             <Route path="/products" element={<AdminProductPage />} />
-            <Route
-              path="/orders"
-              element={
-                <div className="text-[#3E2723] text-2xl font-bold">
-                  Orders Management Page
-                </div>
-              }
-            />
+            <Route path="/orders" element={<AdminOrdersPage />} />
             <Route path="/add-product" element={<AddProductPage />} />
             <Route path="/update-product" element={<UpdateProductPage />} />
             <Route
