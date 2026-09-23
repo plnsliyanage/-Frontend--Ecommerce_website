@@ -39,25 +39,23 @@ export default function RegisterPage() {
     }
 
     try {
-      // Send registration data to backend API
-      await axios.post(import.meta.env.VITE_API_URL + "/api/users/", {
-        email: email,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
-      });
+      const response = await axios.post(
+        import.meta.env.VITE_API_URL + "/api/users/",
+        {
+          email: email,
+          password: password,
+          firstName: firstName,
+          lastName: lastName,
+        },
+      );
 
-      // Show success message
-      toast.success("Registration successful! Please login.");
+      // If backend returned 2xx, this runs
+      toast.success(response.data.message);
 
-      // Redirect user to login page
       navigate("/login");
     } catch (e) {
-      // Display error in browser console
-      console.error("Registration failed:", e);
-
-      // Show error notification
-      toast.error("Registration failed. Please check your credentials.");
+      // If backend returned 4xx or 5xx, this runs
+      toast.error(e.response?.data?.message || "Registration failed");
     }
   }
 
