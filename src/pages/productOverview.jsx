@@ -4,77 +4,6 @@ import toast from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
 import { Loader } from "../components/loader";
 
-// Sample fallback product overview data matching your exact categories and theme
-const sampleProductsData = {
-  "LNL-001": {
-    productID: "LNL-001",
-    name: "Cozy Daisy Granny Square Cardigan",
-    altNames: ["Handmade Floral Cardigan", "Crochet Sweater"],
-    description:
-      "Handcrafted with premium milk cotton yarn featuring vibrant daisy granny squares. Perfect for chilly evenings, offering a timeless aesthetic and maximum comfort.",
-    category: "Women",
-    price: 8500,
-    labelledPrice: 10500,
-    images: [
-      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800",
-    ],
-  },
-  "LNL-002": {
-    productID: "LNL-002",
-    name: "Pastel Dream Crochet Top",
-    altNames: ["Summer Halter", "Lace Beach Top"],
-    description:
-      "A lightweight, breathable lace-stitch halter top designed for summer outings and beach days. Made with soft bamboo-cotton yarn.",
-    category: "Women",
-    price: 4500,
-    labelledPrice: 5500,
-    images: [
-      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&q=80&w=800",
-    ],
-  },
-  "LNL-003": {
-    productID: "LNL-003",
-    name: "Sunflower Amigurumi Plushie",
-    altNames: ["Happy Flower Toy", "Plush Doll"],
-    description:
-      "Adorable handmade plush toy crafted with soft velvet yarn. Brings instant warmth and happiness to any room or nursery.",
-    category: "Toys",
-    price: 2800,
-    labelledPrice: 3500,
-    images: [
-      "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&q=80&w=800",
-    ],
-  },
-  "LNL-004": {
-    productID: "LNL-004",
-    name: "Boho Fringe Crossbody Bag",
-    altNames: ["Macrame Purse", "Yarn Tassel Bag"],
-    description:
-      "Sturdy macrame-style crochet bag complete with cute tassel details and secure magnetic button closure.",
-    category: "Accessories",
-    price: 3600,
-    labelledPrice: 4200,
-    images: [
-      "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=800",
-    ],
-  },
-  "LNL-005": {
-    productID: "LNL-005",
-    name: "Baby Bear Ear Bonnet & Booties Set",
-    altNames: ["Newborn Knit Set", "Infant Gift Package"],
-    description:
-      "Incredibly soft baby wool bonnet featuring adorable bear ears paired with matching snug booties. Gentle on newborn skin.",
-    category: "Baby",
-    price: 3900,
-    labelledPrice: 4800,
-    images: [
-      "https://images.unsplash.com/photo-1522771930-78848d9293e8?auto=format&fit=crop&q=80&w=800",
-    ],
-  },
-};
-
-// Simple image slider sub-component for the overview page
 function ImageSlider({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -91,18 +20,19 @@ function ImageSlider({ images }) {
       <div className="w-full h-80 lg:h-[420px] rounded-3xl overflow-hidden bg-[#F3E8D8] border border-[#EAD7C2] shadow-md">
         <img
           src={images[currentIndex]}
-          alt="Product view"
-          className="w-full h-full object-cover transition duration-300"
+          alt="Product"
+          className="w-full h-full object-cover"
         />
       </div>
+
       {images.length > 1 && (
         <div className="flex gap-3">
-          {images.map((img, idx) => (
+          {images.map((img, index) => (
             <button
-              key={idx}
-              onClick={() => setCurrentIndex(idx)}
-              className={`w-16 h-16 rounded-2xl overflow-hidden border-2 transition ${
-                idx === currentIndex
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-16 h-16 rounded-2xl overflow-hidden border-2 ${
+                index === currentIndex
                   ? "border-[#5D4037] scale-105"
                   : "border-[#EAD7C2] opacity-70"
               }`}
@@ -121,106 +51,122 @@ function ImageSlider({ images }) {
 }
 
 export default function ProductOverview() {
-  const params = useParams();
-  const [status, setStatus] = useState("loading");
+  const { id } = useParams();
+
   const [product, setProduct] = useState(null);
+  const [status, setStatus] = useState("loading");
+  const [selectedColor, setSelectedColor] = useState("");
 
   useEffect(() => {
-    // Attempt backend fetch, fallback to sample data if offline/development
     axios
-      .get(import.meta.env.VITE_API_URL + "/api/products/" + params.id)
+      .get(import.meta.env.VITE_API_URL + "/api/products/" + id)
       .then((res) => {
         setProduct(res.data);
+
+        // Automatically select first colour if available
+        if (res.data.colors?.length > 0) {
+          setSelectedColor(res.data.colors[0]);
+        }
+
         setStatus("success");
       })
-      .catch(() => {
-        // Fallback to sample data matching the requested ID or default to LNL-001
-        const found =
-          sampleProductsData[params.id] || sampleProductsData["LNL-001"];
-        if (found) {
-          setProduct(found);
-          setStatus("success");
-        } else {
-          toast.error("Failed to fetch product details");
-          setStatus("error");
-        }
+      .catch((error) => {
+        console.error(error);
+        toast.error("Failed to fetch product details");
+        setStatus("error");
       });
-  }, [params.id]);
+  }, [id]);
 
-  const addToCart = (prod, qty) => {
-    // Cart logic placeholder or localStorage implementation
-    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const itemIndex = existingCart.findIndex(
-      (item) => item.productID === prod.productID,
+  function addToCart() {
+    if (product.colors?.length > 0 && !selectedColor) {
+      toast.error("Please select a colour");
+      return;
+    }
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const existingIndex = cart.findIndex(
+      (item) =>
+        item.productID === product.productID && item.color === selectedColor,
     );
-    if (itemIndex > -1) {
-      existingCart[itemIndex].quantity += qty;
+
+    if (existingIndex !== -1) {
+      cart[existingIndex].quantity += 1;
     } else {
-      existingCart.push({
-        productID: prod.productID,
-        name: prod.name,
-        price: prod.price,
-        labelledPrice: prod.labelledPrice,
-        image: prod.images?.[0] || "",
-        quantity: qty,
+      cart.push({
+        productID: product.productID,
+        name: product.name,
+        price: product.price,
+        labelledPrice: product.labelledPrice,
+        image: product.images?.[0] || "",
+        color: selectedColor,
+        quantity: 1,
       });
     }
-    localStorage.setItem("cart", JSON.stringify(existingCart));
-  };
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    toast.success("Added to cart successfully!");
+  }
 
   return (
     <div className="w-full min-h-[calc(100vh-100px)] bg-[#FAF6EE] text-[#3E2723] py-10 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      {/* Loading */}
       {status === "loading" && (
         <div className="flex items-center justify-center min-h-[50vh]">
           <Loader />
         </div>
       )}
 
+      {/* Product */}
       {status === "success" && product && (
         <div className="max-w-6xl w-full bg-[#FFF9F0] rounded-3xl border border-[#EAD7C2] shadow-lg overflow-hidden flex flex-col lg:flex-row p-6 lg:p-12 gap-8 lg:gap-12">
-          {/* Left Column: Image Slider */}
+          {/* Images */}
           <div className="w-full lg:w-1/2 flex justify-center items-center">
             <ImageSlider images={product.images} />
           </div>
 
-          {/* Right Column: Details & Actions */}
+          {/* Details */}
           <div className="w-full lg:w-1/2 flex flex-col justify-between">
             <div>
-              {/* Product ID & Category */}
+              {/* ID & Category */}
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-semibold px-3 py-1 bg-[#EAD7C2]/60 text-[#5D4037] rounded-full">
                   ID: {product.productID}
                 </span>
+
                 <span className="text-xs font-semibold px-3 py-1 bg-[#5D4037] text-[#FFF9F0] rounded-full">
                   {product.category}
                 </span>
               </div>
 
-              {/* Title & Alt Names */}
+              {/* Name */}
               <h1 className="text-2xl sm:text-3xl font-bold text-[#3E2723] mb-2">
                 {product.name}
               </h1>
-              {product.altNames && product.altNames.length > 0 && (
+
+              {/* Alternative Names */}
+              {product.altNames?.length > 0 && (
                 <p className="text-sm text-[#6D4C41] italic mb-4">
                   Also known as: {product.altNames.join(" | ")}
                 </p>
               )}
 
-              {/* Price Tag */}
+              {/* Price */}
               <div className="my-4 pt-4 border-t border-[#EAD7C2]">
-                {product.labelledPrice &&
-                product.labelledPrice > product.price ? (
+                {product.labelledPrice > product.price ? (
                   <div className="flex items-center gap-3">
-                    <span className="text-base text-[#6D4C41] font-medium line-through">
-                      LKR {product.labelledPrice.toLocaleString()}
+                    <span className="text-base text-[#6D4C41] line-through">
+                      LKR {Number(product.labelledPrice).toLocaleString()}
                     </span>
+
                     <span className="text-2xl font-bold text-[#5D4037]">
-                      LKR {product.price.toLocaleString()}
+                      LKR {Number(product.price).toLocaleString()}
                     </span>
                   </div>
                 ) : (
                   <span className="text-2xl font-bold text-[#5D4037]">
-                    LKR {product.price.toLocaleString()}
+                    LKR {Number(product.price).toLocaleString()}
                   </span>
                 )}
               </div>
@@ -229,19 +175,68 @@ export default function ProductOverview() {
               <p className="text-[#6D4C41] text-sm sm:text-base leading-relaxed mb-6">
                 {product.description}
               </p>
+
+              {/* Colour Selection */}
+              {product.colors?.length > 0 && (
+                <div className="border-t border-[#EAD7C2] pt-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-[#3E2723]">
+                      Select Colour
+                    </h3>
+
+                    <span className="text-sm text-[#6D4C41]">
+                      {selectedColor || "Choose a colour"}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3">
+                    {product.colors.map((color) => (
+                      <button
+                        key={color}
+                        type="button"
+                        onClick={() => setSelectedColor(color)}
+                        title={color}
+                        className={`
+                          flex items-center gap-2
+                          px-3 py-2
+                          rounded-full
+                          border-2
+                          transition-all
+                          ${
+                            selectedColor === color
+                              ? "border-[#5D4037] bg-[#EAD7C2]/50 scale-105"
+                              : "border-[#EAD7C2] bg-white hover:border-[#8D6E63]"
+                          }
+                        `}
+                      >
+                        <span
+                          className="w-5 h-5 rounded-full border border-gray-300"
+                          style={{ backgroundColor: color }}
+                        />
+
+                        <span className="text-xs font-medium text-[#5D4037]">
+                          {color}
+                        </span>
+
+                        {selectedColor === color && (
+                          <span className="text-[#5D4037] font-bold">✓</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-[#EAD7C2]">
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-6 mt-6 border-t border-[#EAD7C2]">
               <button
-                className="flex-1 py-3 px-6 bg-[#5D4037] text-[#FFF9F0] font-semibold rounded-xl shadow-md hover:bg-[#4E342E] transition text-center"
-                onClick={() => {
-                  addToCart(product, 1);
-                  toast.success("Added to cart successfully!");
-                }}
+                onClick={addToCart}
+                className="flex-1 py-3 px-6 bg-[#5D4037] text-[#FFF9F0] font-semibold rounded-xl shadow-md hover:bg-[#4E342E] transition"
               >
                 Add to Cart
               </button>
+
               <Link
                 to="/checkout"
                 state={[
@@ -251,10 +246,17 @@ export default function ProductOverview() {
                     name: product.name,
                     price: product.price,
                     labelledPrice: product.labelledPrice,
+                    color: selectedColor,
                     quantity: 1,
                   },
                 ]}
-                className="flex-1 py-3 px-6 border-2 border-[#5D4037] text-[#5D4037] font-semibold rounded-xl hover:bg-[#5D4037] hover:text-[#FFF9F0] transition text-center flex items-center justify-center"
+                onClick={(e) => {
+                  if (product.colors?.length > 0 && !selectedColor) {
+                    e.preventDefault();
+                    toast.error("Please select a colour");
+                  }
+                }}
+                className="flex-1 py-3 px-6 border-2 border-[#5D4037] text-[#5D4037] font-semibold rounded-xl hover:bg-[#5D4037] hover:text-[#FFF9F0] transition text-center"
               >
                 Buy Now
               </Link>
@@ -263,14 +265,17 @@ export default function ProductOverview() {
         </div>
       )}
 
+      {/* Error */}
       {status === "error" && (
         <div className="text-center py-20">
           <h1 className="text-xl font-bold text-red-600 mb-2">
             Failed to load product details
           </h1>
+
           <p className="text-[#6D4C41]">
-            Please check your connection or return to the product catalog.
+            Please check your connection or return to the products.
           </p>
+
           <Link
             to="/products"
             className="inline-block mt-4 px-6 py-2 bg-[#5D4037] text-[#FFF9F0] rounded-xl text-sm"

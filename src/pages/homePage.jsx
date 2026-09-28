@@ -1,9 +1,12 @@
 import { Routes, Route, Link } from "react-router-dom";
 import Header from "../components/header";
+
 import ProductPage from "./productPage";
 import ProductOverview from "./productOverview";
 import AboutPage from "./about";
 import ContactPage from "./contacts";
+import CartPage from "./cart";
+import CheckoutPage from "./checkout";
 
 import hero1 from "../assets/hero1.jfif";
 import hero2 from "../assets/hero2.jfif";
@@ -13,7 +16,7 @@ import hero5 from "../assets/hero5.jfif";
 
 import { useEffect, useState } from "react";
 
-// Updated crochet collection sample data matching the exact categories
+// Updated crochet collection sample data
 const products = [
   {
     id: 1,
@@ -73,6 +76,10 @@ const products = [
 
 const heroImages = [hero1, hero2, hero3, hero4, hero5];
 
+// ================================
+// HERO SECTION
+// ================================
+
 function HeroSection() {
   const [currentImage, setCurrentImage] = useState(0);
 
@@ -114,52 +121,67 @@ function HeroSection() {
   );
 }
 
+// ================================
+// FOOTER
+// ================================
+
 function Footer() {
   return (
     <footer className="bg-[#3E2723] text-[#FFF9F0] pt-16 pb-12 mt-20 border-t border-[#5D4037]">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+        {/* Brand */}
         <div>
           <div className="flex items-center gap-2.5 mb-4">
             <span className="text-2xl">🧶</span>
+
             <span className="text-xl font-bold tracking-tight text-[#FFF9F0]">
               Loop & Lace
             </span>
           </div>
+
           <p className="text-[#D7C3A8] text-sm leading-relaxed mb-4">
             Creating mindful, heirloom-quality crochet garments, plushies, and
             gifts stitch by stitch with sustainable, premium yarns.
           </p>
+
           <div className="flex gap-3 text-lg">
             <span className="w-9 h-9 rounded-full bg-[#5D4037] flex items-center justify-center cursor-pointer hover:bg-[#6D4C41] transition">
               ✨
             </span>
+
             <span className="w-9 h-9 rounded-full bg-[#5D4037] flex items-center justify-center cursor-pointer hover:bg-[#6D4C41] transition">
               🧶
             </span>
+
             <span className="w-9 h-9 rounded-full bg-[#5D4037] flex items-center justify-center cursor-pointer hover:bg-[#6D4C41] transition">
               🤎
             </span>
           </div>
         </div>
 
+        {/* Explore */}
         <div>
           <h4 className="font-semibold text-lg mb-4 text-[#EAD7C2]">Explore</h4>
+
           <ul className="space-y-2.5 text-sm text-[#D7C3A8]">
             <li>
               <Link to="/" className="hover:text-white transition">
                 Home Page
               </Link>
             </li>
+
             <li>
               <Link to="/products" className="hover:text-white transition">
                 Full Collection
               </Link>
             </li>
+
             <li>
               <Link to="/about" className="hover:text-white transition">
                 About Us
               </Link>
             </li>
+
             <li>
               <Link to="/contacts" className="hover:text-white transition">
                 Custom Orders
@@ -168,26 +190,31 @@ function Footer() {
           </ul>
         </div>
 
+        {/* Categories */}
         <div>
           <h4 className="font-semibold text-lg mb-4 text-[#EAD7C2]">
             Categories
           </h4>
+
           <ul className="space-y-2.5 text-sm text-[#D7C3A8]">
             <li>
               <Link to="/products" className="hover:text-white transition">
                 Women & Baby
               </Link>
             </li>
+
             <li>
               <Link to="/products" className="hover:text-white transition">
                 Accessories & Toys
               </Link>
             </li>
+
             <li>
               <Link to="/products" className="hover:text-white transition">
                 Gifts & Bundles
               </Link>
             </li>
+
             <li>
               <Link to="/products" className="hover:text-white transition">
                 New Arrivals
@@ -196,14 +223,17 @@ function Footer() {
           </ul>
         </div>
 
+        {/* Newsletter */}
         <div>
           <h4 className="font-semibold text-lg mb-4 text-[#EAD7C2]">
             Stay Connected
           </h4>
+
           <p className="text-sm text-[#D7C3A8] mb-4">
             Join our cozy newsletter for early drops, pattern sneak peeks, and
             custom slots.
           </p>
+
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -217,6 +247,7 @@ function Footer() {
               required
               className="bg-[#4E342E] text-white placeholder-[#D7C3A8]/70 px-4 py-2.5 rounded-xl border border-[#5D4037] text-sm focus:outline-none focus:border-[#EAD7C2]"
             />
+
             <button
               type="submit"
               className="bg-[#EAD7C2] text-[#3E2723] font-semibold py-2.5 rounded-xl text-sm hover:bg-[#FFF9F0] transition shadow-sm cursor-pointer"
@@ -227,6 +258,7 @@ function Footer() {
         </div>
       </div>
 
+      {/* Copyright */}
       <div className="max-w-7xl mx-auto px-6 pt-8 border-t border-[#5D4037] text-center text-xs text-[#D7C3A8]">
         <p>
           &copy; {new Date().getFullYear()} Loop & Lace. Handcrafted with love
@@ -237,6 +269,10 @@ function Footer() {
   );
 }
 
+// ================================
+// HOME PAGE
+// ================================
+
 export default function HomePage() {
   return (
     <div className="w-full min-h-screen bg-[#FAF6EE] text-[#3E2723] font-sans flex flex-col justify-between">
@@ -244,27 +280,31 @@ export default function HomePage() {
         <Header />
 
         <Routes>
-          {/* Home page */}
+          {/* ================= HOME ================= */}
           <Route
             path="/"
             element={
               <div>
                 <HeroSection />
 
-                {/* Welcome Banner Quote Section */}
+                {/* ================= WELCOME SECTION ================= */}
+
                 <section className="py-12 px-6 text-center max-w-3xl mx-auto">
                   <h1 className="text-3xl sm:text-4xl font-bold text-[#3E2723] tracking-tight mb-3">
                     Crafted with love. Wrapped in warmth.
                   </h1>
+
                   <p className="text-[#6D4C41] text-base sm:text-lg">
                     Explore our exclusive collection of handmade crochet
                     garments, cute plushies, and timeless yarn accessories made
                     entirely stitch by stitch.
                   </p>
+
                   <div className="w-16 h-1 bg-[#D7C3A8] mx-auto mt-6 rounded-full"></div>
                 </section>
 
-                {/* Featured Categories */}
+                {/* ================= CATEGORIES ================= */}
+
                 <section className="px-6 py-6 max-w-7xl mx-auto">
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                     <Link
@@ -274,13 +314,16 @@ export default function HomePage() {
                       <span className="text-2xl mb-2 block group-hover:scale-110 transition">
                         👗
                       </span>
+
                       <h3 className="font-semibold text-[#3E2723] text-sm">
                         Women
                       </h3>
+
                       <p className="text-[10px] text-[#6D4C41] mt-0.5">
                         Garments & Tops
                       </p>
                     </Link>
+
                     <Link
                       to="/products"
                       className="bg-[#FFF9F0] p-5 rounded-2xl border border-[#EAD7C2] text-center shadow-sm hover:shadow-md hover:border-[#5D4037] transition group"
@@ -288,13 +331,16 @@ export default function HomePage() {
                       <span className="text-2xl mb-2 block group-hover:scale-110 transition">
                         🍼
                       </span>
+
                       <h3 className="font-semibold text-[#3E2723] text-sm">
                         Baby
                       </h3>
+
                       <p className="text-[10px] text-[#6D4C41] mt-0.5">
                         Booties & Sets
                       </p>
                     </Link>
+
                     <Link
                       to="/products"
                       className="bg-[#FFF9F0] p-5 rounded-2xl border border-[#EAD7C2] text-center shadow-sm hover:shadow-md hover:border-[#5D4037] transition group"
@@ -302,13 +348,16 @@ export default function HomePage() {
                       <span className="text-2xl mb-2 block group-hover:scale-110 transition">
                         👜
                       </span>
+
                       <h3 className="font-semibold text-[#3E2723] text-sm">
                         Accessories
                       </h3>
+
                       <p className="text-[10px] text-[#6D4C41] mt-0.5">
                         Bags & Hats
                       </p>
                     </Link>
+
                     <Link
                       to="/products"
                       className="bg-[#FFF9F0] p-5 rounded-2xl border border-[#EAD7C2] text-center shadow-sm hover:shadow-md hover:border-[#5D4037] transition group"
@@ -316,13 +365,16 @@ export default function HomePage() {
                       <span className="text-2xl mb-2 block group-hover:scale-110 transition">
                         🧸
                       </span>
+
                       <h3 className="font-semibold text-[#3E2723] text-sm">
                         Toys
                       </h3>
+
                       <p className="text-[10px] text-[#6D4C41] mt-0.5">
                         Plushies & Amigurumi
                       </p>
                     </Link>
+
                     <Link
                       to="/products"
                       className="bg-[#FFF9F0] p-5 rounded-2xl border border-[#EAD7C2] text-center shadow-sm hover:shadow-md hover:border-[#5D4037] transition group"
@@ -330,13 +382,16 @@ export default function HomePage() {
                       <span className="text-2xl mb-2 block group-hover:scale-110 transition">
                         🎁
                       </span>
+
                       <h3 className="font-semibold text-[#3E2723] text-sm">
                         Gifts
                       </h3>
+
                       <p className="text-[10px] text-[#6D4C41] mt-0.5">
                         Curated Bundles
                       </p>
                     </Link>
+
                     <Link
                       to="/products"
                       className="bg-[#FFF9F0] p-5 rounded-2xl border border-[#EAD7C2] text-center shadow-sm hover:shadow-md hover:border-[#5D4037] transition group"
@@ -344,9 +399,11 @@ export default function HomePage() {
                       <span className="text-2xl mb-2 block group-hover:scale-110 transition">
                         ✨
                       </span>
+
                       <h3 className="font-semibold text-[#3E2723] text-sm">
                         New Arrivals
                       </h3>
+
                       <p className="text-[10px] text-[#6D4C41] mt-0.5">
                         Latest Drops
                       </p>
@@ -354,12 +411,14 @@ export default function HomePage() {
                   </div>
                 </section>
 
-                {/* Products Preview Grid */}
+                {/* ================= FEATURED PRODUCTS ================= */}
+
                 <section className="py-12 px-6 max-w-7xl mx-auto">
                   <div className="flex justify-between items-center mb-8">
                     <h2 className="text-2xl sm:text-3xl font-bold text-[#3E2723]">
                       Featured Creations
                     </h2>
+
                     <Link
                       to="/products"
                       className="text-sm font-semibold text-[#5D4037] hover:underline underline-offset-4"
@@ -380,23 +439,28 @@ export default function HomePage() {
                             alt={item.name}
                             className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                           />
+
                           <span className="absolute top-3 left-3 bg-[#5D4037] text-[#FFF9F0] text-xs px-3 py-1 rounded-full font-medium">
                             {item.category}
                           </span>
                         </div>
+
                         <div className="p-6 flex flex-col flex-grow justify-between">
                           <div>
                             <h3 className="text-lg font-semibold text-[#3E2723] mb-1">
                               {item.name}
                             </h3>
+
                             <p className="text-[#6D4C41] text-sm line-clamp-2 mb-4">
                               {item.description}
                             </p>
                           </div>
+
                           <div className="flex items-center justify-between pt-4 border-t border-[#EAD7C2]">
                             <span className="text-lg font-bold text-[#5D4037]">
                               LKR {item.price.toLocaleString()}
                             </span>
+
                             <Link
                               to={`/overview/${item.id}`}
                               className="px-4 py-2 bg-[#5D4037] text-[#FFF9F0] text-sm font-medium rounded-xl hover:bg-[#4E342E] transition"
@@ -410,12 +474,14 @@ export default function HomePage() {
                   </div>
                 </section>
 
-                {/* Customer Testimonials Section */}
+                {/* ================= TESTIMONIALS ================= */}
+
                 <section className="py-16 px-6 max-w-7xl mx-auto">
                   <div className="text-center max-w-xl mx-auto mb-12">
                     <span className="text-xs font-bold text-[#A1887F] uppercase tracking-widest block mb-2">
                       Customer Love
                     </span>
+
                     <h2 className="text-2xl sm:text-3xl font-bold text-[#3E2723]">
                       What Warmth Collectors Say
                     </h2>
@@ -428,14 +494,17 @@ export default function HomePage() {
                         person! The stitches are so neat, and it keeps me warm
                         on chilly coffee dates.&quot;
                       </p>
+
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-[#EAD7C2] flex items-center justify-center font-bold text-[#3E2723]">
                           SA
                         </div>
+
                         <div>
                           <h4 className="font-bold text-sm text-[#3E2723]">
                             Shenali A.
                           </h4>
+
                           <span className="text-xs text-[#A1887F]">
                             Verified Collector
                           </span>
@@ -449,14 +518,17 @@ export default function HomePage() {
                         she refuses to let go of it! Super soft velvet yarn and
                         incredible attention to detail.&quot;
                       </p>
+
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-[#EAD7C2] flex items-center justify-center font-bold text-[#3E2723]">
                           DK
                         </div>
+
                         <div>
                           <h4 className="font-bold text-sm text-[#3E2723]">
                             Dinithi K.
                           </h4>
+
                           <span className="text-xs text-[#A1887F]">
                             Verified Collector
                           </span>
@@ -470,14 +542,17 @@ export default function HomePage() {
                         colors of my halter top just how I wanted. Will
                         definitely order again!&quot;
                       </p>
+
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-[#EAD7C2] flex items-center justify-center font-bold text-[#3E2723]">
                           TP
                         </div>
+
                         <div>
                           <h4 className="font-bold text-sm text-[#3E2723]">
                             Tanya P.
                           </h4>
+
                           <span className="text-xs text-[#A1887F]">
                             Verified Collector
                           </span>
@@ -487,16 +562,19 @@ export default function HomePage() {
                   </div>
                 </section>
 
-                {/* Newsletter / Custom Order CTA */}
+                {/* ================= CUSTOM ORDER ================= */}
+
                 <section className="bg-[#EAD7C2]/40 py-16 px-6 mt-12 border-t border-b border-[#EAD7C2]">
                   <div className="max-w-xl mx-auto text-center">
                     <h3 className="text-2xl font-bold text-[#3E2723] mb-2">
                       Want a Custom Color Combination?
                     </h3>
+
                     <p className="text-[#6D4C41] text-sm mb-6">
                       We accept custom requests for cardigans, tops, and
                       plushies. Tell us your favorite colors and size!
                     </p>
+
                     <Link
                       to="/contacts"
                       className="inline-block px-6 py-3 bg-[#5D4037] text-[#FFF9F0] font-semibold rounded-xl shadow-md hover:bg-[#4E342E] transition"
@@ -509,30 +587,44 @@ export default function HomePage() {
             }
           />
 
-          {/* Product page */}
+          {/* ================= PRODUCTS ================= */}
+
           <Route
             path="/products"
             element={<ProductPage products={products} />}
           />
 
-          {/* Contact page */}
+          {/* ================= CONTACT ================= */}
+
           <Route path="/contacts" element={<ContactPage />} />
 
-          {/* About page */}
+          {/* ================= ABOUT ================= */}
+
           <Route path="/about" element={<AboutPage />} />
 
-          {/* Product overview */}
+          {/* ================= PRODUCT OVERVIEW ================= */}
+
           <Route
             path="/overview/:id"
             element={<ProductOverview products={products} />}
           />
 
-          {/* 404 page */}
+          {/* ================= CART ================= */}
+
+          <Route path="/cart" element={<CartPage />} />
+
+          {/* ================= CHECKOUT ================= */}
+
+          <Route path="/checkout" element={<CheckoutPage />} />
+
+          {/* ================= 404 ================= */}
+
           <Route
             path="*"
             element={
               <div className="p-20 text-center">
                 <h1 className="text-3xl font-bold text-[#3E2723] mb-2">404</h1>
+
                 <p className="text-[#6D4C41]">
                   The page you are looking for could not be found.
                 </p>
@@ -541,6 +633,8 @@ export default function HomePage() {
           />
         </Routes>
       </div>
+
+      {/* ================= FOOTER ================= */}
 
       <Footer />
     </div>
