@@ -24,7 +24,7 @@ export default function Header() {
         </Link>
 
         {/* Navigation Links */}
-        <nav className="flex items-center gap-[30px]">
+        <nav className="flex items-center gap-[24px] sm:gap-[30px]">
           <Link
             to="/"
             className="text-[#FFF9F0]/90 font-medium hover:text-[#FFF9F0] transition"
@@ -50,11 +50,20 @@ export default function Header() {
             Contacts
           </Link>
 
+          {/* Cart Link */}
+          <Link
+            to="/cart"
+            className="relative flex items-center gap-1.5 text-[#FFF9F0]/90 font-medium hover:text-[#FFF9F0] transition px-3 py-1.5 rounded-xl bg-[#4E342E]/60 border border-[#4E342E]"
+          >
+            <span className="text-base">🛒</span>
+            <span className="hidden md:inline text-sm">Cart</span>
+          </Link>
+
           {/* Logout Button */}
           <button
             onClick={handleLogout}
             className="
-                            ml-4
+                            ml-2
                             px-4
                             py-2
                             rounded-xl
@@ -66,7 +75,7 @@ export default function Header() {
                             hover:bg-[#F3E8D8]
                             active:scale-[0.98]
                             transition
-                        "
+                          "
           >
             Logout
           </button>

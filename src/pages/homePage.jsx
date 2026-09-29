@@ -187,6 +187,11 @@ function Footer() {
                 Custom Orders
               </Link>
             </li>
+            <li>
+              <Link to="/cart" className="hover:text-white transition">
+                Shopping Cart
+              </Link>
+            </li>
           </ul>
         </div>
 
