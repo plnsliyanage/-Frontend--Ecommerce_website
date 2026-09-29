@@ -5,29 +5,42 @@ export default function UserData() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+
   const menuRef = useRef(null);
   const btnRef = useRef(null);
 
+  // Get logged-in user
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) return setLoading(false);
+
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     axios
       .get(`${import.meta.env.VITE_API_URL}/api/users/me`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((res) => setUser(res.data))
+      .then((res) => {
+        setUser(res.data);
+      })
       .catch(() => {
         localStorage.removeItem("token");
         setUser(null);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
-  // Click-outside to close menu
+  // Close menu when clicking outside
   useEffect(() => {
     function onDocClick(e) {
       if (!menuOpen) return;
+
       if (
         menuRef.current &&
         !menuRef.current.contains(e.target) &&
@@ -37,32 +50,44 @@ export default function UserData() {
         setMenuOpen(false);
       }
     }
+
     function onEsc(e) {
-      if (e.key === "Escape") setMenuOpen(false);
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+      }
     }
+
     document.addEventListener("mousedown", onDocClick);
     document.addEventListener("keydown", onEsc);
+
     return () => {
       document.removeEventListener("mousedown", onDocClick);
+
       document.removeEventListener("keydown", onEsc);
     };
   }, [menuOpen]);
 
+  // Create initials for avatar
   const initials =
     user?.firstName || user?.lastName
-      ? `${(user?.firstName ?? "")[0] ?? ""}${(user?.lastName ?? "")[0] ?? ""}`.toUpperCase()
+      ? `${(user?.firstName ?? "")[0] ?? ""}${
+          (user?.lastName ?? "")[0] ?? ""
+        }`.toUpperCase()
       : "U";
 
+  // Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
+
     setUser(null);
     setMenuOpen(false);
+
     window.location.href = "/login";
   };
 
   return (
     <div className="w-full flex items-center justify-center">
-      {/* Loading state */}
+      {/* LOADING */}
       {loading && (
         <div
           className="h-9 w-9 rounded-full border-2 border-primary border-b-transparent animate-spin"
@@ -71,7 +96,7 @@ export default function UserData() {
         />
       )}
 
-      {/* Logged-out CTA */}
+      {/* LOGGED OUT */}
       {!loading && !user && (
         <a
           href="/login"
@@ -81,11 +106,12 @@ export default function UserData() {
         </a>
       )}
 
-      {/* Logged-in menu */}
+      {/* LOGGED IN */}
       {user && (
         <div className="relative flex items-center gap-3">
+          {/* USER INFORMATION */}
           <div className="flex items-center gap-3 rounded-full bg-primary/80 px-3 py-1.5 shadow-sm ring-1 ring-secondary/10">
-            {/* Avatar */}
+            {/* AVATAR */}
             {user.image ? (
               <img
                 src={user.image}
@@ -98,11 +124,12 @@ export default function UserData() {
               </div>
             )}
 
-            {/* Name + role (optional) */}
+            {/* NAME AND ROLE */}
             <div className="hidden sm:flex flex-col leading-tight">
               <span className="text-sm font-semibold text-secondary">
                 {user.firstName ?? "User"}
               </span>
+
               {user.role && (
                 <span className="text-[11px] text-secondary/70">
                   {user.role}
@@ -110,27 +137,14 @@ export default function UserData() {
               )}
             </div>
 
-            {/* Menu button */}
+            {/* MENU BUTTON */}
             <button
               ref={btnRef}
               type="button"
-              onClick={() => setMenuOpen((v) => !v)}
+              onClick={() => setMenuOpen((value) => !value)}
               aria-haspopup="menu"
               aria-expanded={menuOpen}
               className="ml-1 inline-flex h-8 w-8 items-center justify-center rounded-full text-secondary/80 hover:bg-secondary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
-              onKeyDown={(e) => {
-                if (e.key === "ArrowDown") {
-                  e.preventDefault();
-                  setMenuOpen(true);
-                  // focus first item after opening (next tick)
-                  setTimeout(() => {
-                    const first = menuRef.current?.querySelector(
-                      "button[data-menu-item]",
-                    );
-                    first?.focus();
-                  }, 0);
-                }
-              }}
               title="Open menu"
             >
               <svg
@@ -144,23 +158,33 @@ export default function UserData() {
             </button>
           </div>
 
-          {/* Dropdown */}
+          {/* DROPDOWN */}
           {menuOpen && (
             <div
               ref={menuRef}
               role="menu"
               aria-label="User menu"
-              className="absolute right-0 top-12 z-50 w-56 origin-top-right rounded-xl bg-white p-1.5 shadow-lg ring-1 ring-secondary/10 animate-in fade-in zoom-in duration-100"
+              className="absolute right-0 top-12 z-50 w-56 origin-top-right rounded-xl bg-white p-1.5 shadow-lg ring-1 ring-secondary/10"
             >
+              {/* ACCOUNT SETTINGS */}
               <MenuItem
-                onClick={() => (window.location.href = "/settings")}
+                onClick={() => {
+                  window.location.href = "/settings";
+                }}
                 label="Account Settings"
               />
+
+              {/* MY ORDERS */}
               <MenuItem
-                onClick={() => (window.location.href = "/orders")}
-                label="Orders"
+                onClick={() => {
+                  window.location.href = "/orders";
+                }}
+                label="My Orders"
               />
+
               <div className="my-1 h-px bg-secondary/10" />
+
+              {/* LOGOUT */}
               <MenuItem destructive onClick={handleLogout} label="Logout" />
             </div>
           )}
@@ -170,10 +194,15 @@ export default function UserData() {
   );
 }
 
+// ================================
+// MENU ITEM
+// ================================
+
 function MenuItem({ label, onClick, destructive = false }) {
   return (
     <button
       data-menu-item
+      type="button"
       onClick={onClick}
       className={`w-full rounded-lg px-3 py-2 text-left text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 ${
         destructive
@@ -181,22 +210,28 @@ function MenuItem({ label, onClick, destructive = false }) {
           : "text-secondary hover:bg-primary"
       }`}
       onKeyDown={(e) => {
-        if (e.key === "ArrowDown") {
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
           e.preventDefault();
-          const next =
+
+          const items =
             e.currentTarget.parentElement?.querySelectorAll("[data-menu-item]");
-          if (!next) return;
-          const items = Array.from(next);
-          const idx = items.indexOf(e.currentTarget);
-          items[(idx + 1) % items.length]?.focus();
-        } else if (e.key === "ArrowUp") {
-          e.preventDefault();
-          const next =
-            e.currentTarget.parentElement?.querySelectorAll("[data-menu-item]");
-          if (!next) return;
-          const items = Array.from(next);
-          const idx = items.indexOf(e.currentTarget);
-          items[(idx - 1 + items.length) % items.length]?.focus();
+
+          if (!items) return;
+
+          const itemArray = Array.from(items);
+
+          const currentIndex = itemArray.indexOf(e.currentTarget);
+
+          let nextIndex;
+
+          if (e.key === "ArrowDown") {
+            nextIndex = (currentIndex + 1) % itemArray.length;
+          } else {
+            nextIndex =
+              (currentIndex - 1 + itemArray.length) % itemArray.length;
+          }
+
+          itemArray[nextIndex]?.focus();
         }
       }}
     >

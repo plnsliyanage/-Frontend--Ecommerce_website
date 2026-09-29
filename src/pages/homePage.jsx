@@ -7,6 +7,7 @@ import AboutPage from "./about";
 import ContactPage from "./contacts";
 import CartPage from "./cart";
 import CheckoutPage from "./checkout";
+import OrdersPage from "./orders";
 
 import hero1 from "../assets/hero1.jfif";
 import hero2 from "../assets/hero2.jfif";
@@ -192,6 +193,11 @@ function Footer() {
                 Shopping Cart
               </Link>
             </li>
+            <li>
+              <Link to="/orders" className="hover:text-white transition">
+                My Orders
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -283,6 +289,21 @@ export default function HomePage() {
     <div className="w-full min-h-screen bg-[#FAF6EE] text-[#3E2723] font-sans flex flex-col justify-between">
       <div>
         <Header />
+
+        {/* Added "My Orders" Quick Action Bar right under the Header */}
+        <div className="bg-[#EAD7C2]/50 border-b border-[#EAD7C2] py-2.5 px-6">
+          <div className="max-w-7xl mx-auto flex justify-between items-center text-sm">
+            <span className="text-[#6D4C41] font-medium hidden sm:inline">
+              ✨ Welcome back! Check the status of your handmade pieces.
+            </span>
+            <Link
+              to="/orders"
+              className="ml-auto inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#5D4037] text-[#FFF9F0] rounded-xl font-medium text-xs hover:bg-[#4E342E] transition shadow-sm"
+            >
+              📦 View My Orders
+            </Link>
+          </div>
+        </div>
 
         <Routes>
           {/* ================= HOME ================= */}
@@ -618,9 +639,10 @@ export default function HomePage() {
 
           <Route path="/cart" element={<CartPage />} />
 
-          {/* ================= CHECKOUT ================= */}
+          {/* ================= CHECKOUT & ORDERS ================= */}
 
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/orders" element={<OrdersPage />} />
 
           {/* ================= 404 ================= */}
 

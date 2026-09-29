@@ -8,7 +8,7 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Load user's orders
+  // Load only the logged-in user's orders
   useEffect(() => {
     const fetchOrders = async () => {
       const token = localStorage.getItem("token");
@@ -29,12 +29,11 @@ export default function OrdersPage() {
           },
         );
 
-        // Backend may return an array directly
+        // Backend should return only this user's orders
         setOrders(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Error loading orders:", error);
 
-        // If token is invalid
         if (error.response?.status === 401) {
           localStorage.removeItem("token");
           navigate("/login");
@@ -47,7 +46,6 @@ export default function OrdersPage() {
     fetchOrders();
   }, [navigate]);
 
-  // Calculate order total
   function calculateOrderTotal(order) {
     if (order.total != null) {
       return Number(order.total);
@@ -57,7 +55,7 @@ export default function OrdersPage() {
       return Number(order.totalAmount);
     }
 
-    if (!order.items || !Array.isArray(order.items)) {
+    if (!Array.isArray(order.items)) {
       return 0;
     }
 
@@ -66,7 +64,6 @@ export default function OrdersPage() {
     }, 0);
   }
 
-  // Loading screen
   if (loading) {
     return (
       <div className="w-full min-h-[calc(100vh-100px)] bg-primary flex items-center justify-center">
@@ -139,7 +136,6 @@ export default function OrdersPage() {
                     )}
                   </div>
 
-                  {/* ORDER STATUS */}
                   <span
                     className={`px-4 py-1.5 rounded-full text-sm font-semibold self-start ${
                       String(order.status).toLowerCase() === "completed"
@@ -185,7 +181,6 @@ export default function OrdersPage() {
                           key={item._id || item.id || itemIndex}
                           className="bg-primary rounded-lg p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
                         >
-                          {/* ITEM INFORMATION */}
                           <div>
                             <h4 className="font-semibold text-secondary">
                               {item.productName ||
@@ -209,7 +204,6 @@ export default function OrdersPage() {
                             </p>
                           </div>
 
-                          {/* ITEM PRICE */}
                           <div className="text-right">
                             <p className="font-semibold text-accent">
                               LKR {Number(item.price || 0).toFixed(2)}
